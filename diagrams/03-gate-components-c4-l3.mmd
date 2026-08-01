@@ -1,0 +1,36 @@
+%% Inside the gate — components (C4 level 3)
+%% Renders natively in a GitHub README inside a ```mermaid fence.
+flowchart LR
+  classDef code fill:#fafbfa,stroke:#c2ccc9,color:#212a2d
+  classDef model fill:#e6edef,stroke:#3f6274,stroke-width:2px,color:#212a2d
+  classDef side fill:#eef2f1,stroke:#dae1df,color:#4b565b
+  classDef notbuilt fill:#fafbfa,stroke:#7c433c,stroke-dasharray:6 5,color:#212a2d
+
+  T["1 · Transcript — patient turns only<br/>anything the assistant said is excluded"]:::code
+  S["2 · segment()<br/>numbered clauses, each with its offsets"]:::code
+  M["3 · MODEL selects<br/>replies only ids: 3, 7, 1 — no patient words"]:::model
+  P["4 · _parse_ids()<br/>out-of-range numbers dropped and counted"]:::code
+  AS["5 · assemble_from_ids()<br/>code looks each id up in the patient's own clauses"]:::code
+  V["6 · verify_span()<br/>read back token by token; only listed fillers may drop"]:::code
+  SH["7 · The sheet<br/>text · tier · start-end · verified · chosen_by"]:::code
+
+  T --> S --> M --> P --> AS --> V --> SH
+
+  UNSEL["Everything not selected comes back too<br/>the patient can add any of it (chosen_by: patient)"]:::side
+  EXPORT["/export re-derives from transcript + kept ids<br/>no model call"]:::side
+  SAFETY["safety_net.py — always in the letter<br/>criteria verbatim from NHLBI / MedlinePlus / NIDDK<br/>no model runs in this file"]:::side
+  POLISH["polish.py — 'say it better'<br/>model drafts; a draft that adds a clinical word is suppressed<br/>number / negation / hedge slips become cautions<br/>patient approves per line; receipt still opens the original"]:::side
+
+  AS --- UNSEL
+  SH --- EXPORT
+  SH --- SAFETY
+  SH --- POLISH
+
+  subgraph ESC["ESCALATION — designed and sourced, NOT YET WIRED INTO THE APP"]
+    direction LR
+    E1["what the patient said"]:::notbuilt
+    E2["MODEL detects only — low bar, biased to over-flag"]:::model
+    E3["RULE TABLE decides — NIMH ASQ plus 14 sourced rules"]:::notbuilt
+    E4["route: emergency now / same day / routine + audit log"]:::notbuilt
+    E1 --> E2 --> E3 --> E4
+  end

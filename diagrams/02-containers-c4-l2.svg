@@ -1,0 +1,129 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1100" width="1600" height="1100" role="img" aria-label="My Say container diagram, two deployments">
+<title>My Say — containers, two deployments (C4 level 2)</title>
+<style>
+ text{font-family:'Segoe UI',Optima,Candara,Calibri,'Noto Sans',Arial,Helvetica,sans-serif;fill:#212a2d}
+ .h1{font-size:27px;font-weight:650;letter-spacing:-.3px}
+ .sub{font-size:14px;fill:#4b565b}
+ .kick{font-size:10.5px;font-weight:700;letter-spacing:1.5px;fill:#8b969b}
+ .kicka{font-size:10.5px;font-weight:700;letter-spacing:1.5px;fill:#294d5a}
+ .kickc{font-size:10.5px;font-weight:700;letter-spacing:1.5px;fill:#6b4a8a}
+ .panel{font-size:13px;font-weight:700;letter-spacing:1.6px;fill:#294d5a}
+ .bt2{font-size:16px;font-weight:650}
+ .body{font-size:13px;fill:#4b565b}
+ .small{font-size:11.5px;fill:#8b969b}
+ .lbl{font-size:12.5px;fill:#4b565b}
+ .lbla{font-size:12.5px;font-weight:650;fill:#294d5a}
+ .mono{font-family:Consolas,'Cascadia Mono','DejaVu Sans Mono',monospace;font-size:11.5px;fill:#294d5a}
+ .card{fill:#fafbfa;stroke:#c2ccc9;stroke-width:1.2}
+ .inner{fill:#eef2f1;stroke:#dae1df;stroke-width:1}
+</style>
+<defs>
+ <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#3f6274"/></marker>
+ <marker id="ahc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6b4a8a"/></marker>
+</defs>
+
+<rect width="1600" height="1100" fill="#f1f4f3"/>
+
+<text class="h1" x="44" y="54">My Say — containers, two deployments</text>
+<text class="sub" x="44" y="80">C4 level 2 · the same understudy_app.py runs in both. What differs is where the model runs, and who can reach the page.</text>
+<line x1="44" y1="102" x2="1556" y2="102" stroke="#dae1df" stroke-width="1"/>
+
+<!-- ============ PANEL A ============ -->
+<rect x="44" y="132" width="700" height="740" rx="16" fill="#e9eff0" stroke="#3f6274" stroke-width="2" stroke-dasharray="9 6"/>
+<text class="panel" x="70" y="166">A · ON-DEVICE — THE SHIPPED SHAPE</text>
+<text class="small" x="70" y="188">the demo laptop, in airplane mode · zero pip installs</text>
+
+<rect class="card" x="76" y="210" width="636" height="144" rx="10"/>
+<text class="kick" x="96" y="236">CONTAINER · WEB BROWSER</text>
+<text class="bt2" x="96" y="262">One HTML page</text>
+<text class="body" x="96" y="286">No build step, no framework, no external assets. Every edit the patient</text>
+<text class="body" x="96" y="304">makes to the sheet happens here, in the tab.</text>
+<text class="body" x="96" y="326">Voice input (optional): mic button → local /stt → editable draft in the composer</text>
+<text class="small" x="96" y="346">faster-whisper (tiny.en), in-memory, never archived. Send is still the only path into msgs[]; hidden if not installed.</text>
+
+<line x1="394" y1="358" x2="394" y2="398" stroke="#3f6274" stroke-width="2" marker-end="url(#ah)"/>
+<text class="small" x="410" y="382">HTTP  127.0.0.1:8077  ·  /chat  /sheet  /polish  /export  /stt</text>
+
+<rect class="card" x="76" y="402" width="636" height="196" rx="10"/>
+<text class="kick" x="96" y="428">CONTAINER · PYTHON 3 STDLIB HTTP SERVER</text>
+<text class="bt2" x="96" y="454">understudy_app.py</text>
+<text class="body" x="96" y="478">Serves the page, calls the model, keeps no state between requests.</text>
+<rect class="inner" x="96" y="496" width="596" height="86" rx="8"/>
+<text class="kick" x="114" y="518">IN-PROCESS MODULES</text>
+<text class="body" x="114" y="540">gate/pipeline.py · span_check.py · safety_net.py · polish.py</text>
+<text class="small" x="114" y="562">Segments, verifies, assembles. span_check and safety_net contain no model call at all.</text>
+
+<line x1="394" y1="602" x2="394" y2="642" stroke="#3f6274" stroke-width="2" marker-end="url(#ah)"/>
+<text class="small" x="410" y="626">HTTP  localhost:11434  ·  /api/chat</text>
+
+<rect class="card" x="76" y="646" width="636" height="104" rx="10"/>
+<text class="kick" x="96" y="672">CONTAINER · OLLAMA</text>
+<text class="bt2" x="96" y="698">Gemma 4 E2B (default) · E4B</text>
+<text class="body" x="96" y="722">On this machine&#8217;s CPU. Pre-warmed at startup so the first turn isn&#8217;t a cold load.</text>
+
+<text class="small" x="76" y="782">medspaCy is optional. If it isn&#8217;t installed, the family-history tier switches OFF</text>
+<text class="small" x="76" y="802">and the sheet says so on its face — it never fails open.</text>
+<text class="lbla" x="76" y="838">Everything in this panel works with the network switched off. That is the demo.</text>
+
+<!-- ============ PANEL B ============ -->
+<rect x="784" y="132" width="772" height="740" rx="16" fill="#f5f7f6" stroke="#c2ccc9" stroke-width="1.4"/>
+<text class="panel" x="810" y="166">B · HOSTED PREVIEW — THE QR LINK</text>
+<text class="small" x="810" y="188">so anyone can try it from a phone · the page says, in a banner, that it is running in the cloud</text>
+
+<rect class="card" x="812" y="210" width="724" height="92" rx="10"/>
+<text class="kick" x="832" y="236">CONTAINER · PHONE BROWSERS</text>
+<text class="bt2" x="832" y="262">Whoever scans the QR code</text>
+<text class="body" x="832" y="286">No login, no install. Every page carries the demo-only banner: no real health information.</text>
+
+<line x1="1174" y1="306" x2="1174" y2="344" stroke="#3f6274" stroke-width="2" marker-end="url(#ah)"/>
+<text class="small" x="1190" y="330">HTTPS</text>
+
+<rect class="card" x="812" y="348" width="724" height="104" rx="10"/>
+<text class="kick" x="832" y="374">CONTAINER · EDGE PROXY  (SMALL VPS)</text>
+<text class="bt2" x="832" y="400">demo subdomain</text>
+<text class="body" x="832" y="424">TLS, compression, X-Robots-Tag: noindex. Proxies to whichever surface is live.</text>
+
+<line x1="988" y1="456" x2="988" y2="508" stroke="#3f6274" stroke-width="2" marker-end="url(#ah)"/>
+<line x1="1360" y1="456" x2="1360" y2="508" stroke="#3f6274" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#ah)"/>
+
+<rect x="812" y="516" width="106" height="22" rx="11" fill="#d7e3e5"/>
+<text class="kicka" x="826" y="531">LIVE TODAY</text>
+<rect class="card" x="812" y="546" width="352" height="136" rx="10"/>
+<text class="kick" x="830" y="572">APP SERVICE</text>
+<text class="bt2" x="830" y="598">understudy_app.py</text>
+<text class="body" x="830" y="624">The same file, one env away:</text>
+<text class="mono" x="830" y="644">UNDERSTUDY_HOSTED=1</text>
+<text class="body" x="830" y="666">bound to localhost, behind the proxy.</text>
+
+<line x1="988" y1="686" x2="988" y2="726" stroke="#6b4a8a" stroke-width="2" marker-end="url(#ahc)"/>
+<text class="small" x="1004" y="710">HTTPS</text>
+<rect x="812" y="730" width="352" height="86" rx="10" fill="#fafbfa" stroke="#6b4a8a" stroke-width="1.4"/>
+<text class="kickc" x="830" y="756">CLOUD MODEL</text>
+<text class="bt2" x="830" y="782">Hosted model backend</text>
+<text class="small" x="830" y="802">labeled in the UI; the words leave the device</text>
+
+<rect x="1184" y="516" width="196" height="22" rx="11" fill="#e6edef" stroke="#c2ccc9"/>
+<text class="kicka" x="1198" y="531">PLANNED · CONDITIONAL GO</text>
+<rect x="1184" y="546" width="352" height="270" rx="10" fill="#fafbfa" stroke="#3f6274" stroke-width="1.4" stroke-dasharray="7 5"/>
+<text class="kicka" x="1202" y="572">CPU SANDBOX</text>
+<text class="bt2" x="1202" y="598">small vCPU / RAM / disk budget</text>
+<text class="small" x="1202" y="618">public preview URL · CPU only</text>
+<rect class="inner" x="1202" y="632" width="316" height="58" rx="8"/>
+<text class="body" x="1218" y="656">understudy_app.py</text>
+<text class="small" x="1218" y="676">run directly, no service manager</text>
+<rect class="inner" x="1202" y="702" width="316" height="96" rx="8"/>
+<text class="body" x="1218" y="726">ollama serve → Gemma 4 E2B</text>
+<text class="small" x="1218" y="746">GGUF pulled from Hugging Face —</text>
+<text class="small" x="1218" y="764">the model registry is unreachable</text>
+<text class="small" x="1218" y="782">from inside the sandbox</text>
+
+<!-- ============ NOTES ============ -->
+<line x1="44" y1="898" x2="1556" y2="898" stroke="#dae1df" stroke-width="1"/>
+<text class="kick" x="44" y="926">WHAT IS MEASURED, AND WHAT IS NOT</text>
+<text class="lbl" x="44" y="954">· A and B run the same file. HOSTED mode swaps the runtime menu, adds the honesty banner, and pins the backend server-side so a spoofed value can&#8217;t change it.</text>
+<text class="lbl" x="44" y="978">· A CPU-only sandbox dry-run measured single-digit tokens/sec and fit on disk. RAM is the tight one — the model alone came close to the memory cap, so app-and-Ollama-together in one box is still unproven.</text>
+<text class="lbl" x="44" y="1002">· GPU was ruled out on the hosted path for platform reasons outside this project. CPU is the plan.</text>
+<text class="lbl" x="44" y="1026">· The hosted plan is the CPU sandbox: Ollama running gemma4-e2b (GGUF pulled from Hugging Face), fronted by the edge proxy — the hosted model backend stays the emergency fallback.</text>
+<text class="lbl" x="44" y="1050">· The edge proxy stays in front either way, so the QR link is stable no matter which surface is behind it.</text>
+<text class="lbl" x="44" y="1074">· The cloud backend is the emergency fallback only. The QR link repoints to a new surface only after it passes the same verification the live one already passed.</text>
+</svg>

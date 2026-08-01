@@ -1,0 +1,116 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 880" width="1600" height="880" role="img" aria-label="Why My Say cannot put words in your mouth">
+<title>Why it cannot put words in your mouth</title>
+<style>
+ text{font-family:'Segoe UI',Optima,Candara,Calibri,'Noto Sans',Arial,Helvetica,sans-serif;fill:#212a2d}
+ .h1{font-size:31px;font-weight:650;letter-spacing:-.4px}
+ .sub{font-size:15px;fill:#4b565b}
+ .band{font-size:12px;font-weight:700;letter-spacing:1.7px;fill:#294d5a}
+ .kick{font-size:10.5px;font-weight:700;letter-spacing:1.4px;fill:#8b969b}
+ .kicka{font-size:10.5px;font-weight:700;letter-spacing:1.4px;fill:#294d5a}
+ .say{font-family:'Palatino Linotype','Book Antiqua',Palatino,Georgia,'Iowan Old Style',serif;font-size:16px;fill:#1e3944}
+ .say2{font-family:'Palatino Linotype','Book Antiqua',Palatino,Georgia,'Iowan Old Style',serif;font-size:13.5px;fill:#1e3944}
+ .say3{font-family:'Palatino Linotype','Book Antiqua',Palatino,Georgia,'Iowan Old Style',serif;font-size:15px;fill:#1e3944}
+ .nb{font-size:12.5px;fill:#4b565b}
+ .small{font-size:11.5px;fill:#8b969b}
+ .mono{font-family:Consolas,'Cascadia Mono','DejaVu Sans Mono',monospace;font-size:10.5px;fill:#6b7b81}
+ .big{font-family:Consolas,'Cascadia Mono','DejaVu Sans Mono',monospace;font-size:27px;font-weight:700;fill:#294d5a}
+ .lead{font-size:21px;font-weight:650;fill:#1e3944}
+ .lead2{font-size:14px;fill:#294d5a}
+ .badge{font-size:13px;font-weight:700;fill:#fafbfa}
+ .card{fill:#fafbfa;stroke:#c2ccc9;stroke-width:1.2}
+</style>
+<defs>
+ <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#3f6274"/></marker>
+ <marker id="ahg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#8b969b"/></marker>
+</defs>
+<rect width="1600" height="880" fill="#f1f4f3"/>
+
+<text class="h1" x="44" y="58">Why it cannot put words in your mouth</text>
+<text class="sub" x="44" y="86">The whole idea of My Say, in one picture. Every number below is real output from the code.</text>
+<line x1="44" y1="106" x2="1556" y2="106" stroke="#dae1df" stroke-width="1"/>
+
+<!-- ROW A: the transcript -->
+<rect class="card" x="60" y="126" width="1480" height="112" rx="12"/>
+<text class="kick" x="82" y="152">WHAT YOU SAID</text>
+<text class="small" x="270" y="152">optional voice input: spoken words → editable draft → approved by the person → the transcript above</text>
+<text class="small" x="1518" y="152" text-anchor="end">your own transcript · nothing here has been changed</text>
+<text class="say" x="82" y="178">my chest has been doing this weird thing. more like a flutter than pain</text>
+<text class="say" x="82" y="200">when I stand up too fast mostly. and I have been so tired for about three weeks</text>
+<text class="say" x="82" y="222">I dont want to waste his time</text>
+
+<!-- ROW B: numbered pieces -->
+<text class="band" x="60" y="264">1 · CODE CUTS IT INTO NUMBERED PIECES — THIS HAPPENS BEFORE THE MODEL IS CALLED</text>
+
+<rect class="card" x="60" y="280" width="470" height="58" rx="10"/>
+<circle cx="90" cy="309" r="15" fill="#8b969b"/><text class="badge" x="90" y="314" text-anchor="middle">0</text>
+<text class="say2" x="116" y="305">my chest has been doing this weird thing.</text>
+<text class="mono" x="116" y="325">chars 0–41</text>
+
+<rect x="565" y="280" width="470" height="58" rx="10" fill="#d7e3e5" stroke="#3f6274" stroke-width="1.6"/>
+<circle cx="595" cy="309" r="15" fill="#3f6274"/><text class="badge" x="595" y="314" text-anchor="middle">1</text>
+<text class="say2" x="621" y="305">more like a flutter than pain</text>
+<text class="mono" x="621" y="325" fill="#294d5a">chars 42–71</text>
+
+<rect class="card" x="1070" y="280" width="470" height="58" rx="10"/>
+<circle cx="1100" cy="309" r="15" fill="#8b969b"/><text class="badge" x="1100" y="314" text-anchor="middle">2</text>
+<text class="say2" x="1126" y="305">when I stand up too fast mostly.</text>
+<text class="mono" x="1126" y="325">chars 72–104</text>
+
+<rect x="60" y="350" width="470" height="58" rx="10" fill="#d7e3e5" stroke="#3f6274" stroke-width="1.6"/>
+<circle cx="90" cy="379" r="15" fill="#3f6274"/><text class="badge" x="90" y="384" text-anchor="middle">3</text>
+<text class="say2" x="116" y="375">and I have been so tired for about three weeks</text>
+<text class="mono" x="116" y="395" fill="#294d5a">chars 105–151</text>
+
+<rect class="card" x="565" y="350" width="470" height="58" rx="10"/>
+<circle cx="595" cy="379" r="15" fill="#8b969b"/><text class="badge" x="595" y="384" text-anchor="middle">4</text>
+<text class="say2" x="621" y="375">I dont want to waste his time</text>
+<text class="mono" x="621" y="395">chars 152–181</text>
+
+<text class="small" x="1070" y="366">Five pieces, five numbers.</text>
+<text class="small" x="1070" y="386">The character offsets travel with each piece —</text>
+<text class="small" x="1070" y="406">that is what makes a receipt possible later.</text>
+
+<!-- ROW C: the crux -->
+<text class="band" x="60" y="442">2 · THE MODEL’S ONLY JOB IS TO CHOOSE NUMBERS</text>
+
+<rect x="60" y="458" width="460" height="180" rx="12" fill="#e6edef" stroke="#3f6274" stroke-width="1.8"/>
+<text class="kicka" x="82" y="486">THE MODEL’S ENTIRE ANSWER</text>
+<text class="big" x="82" y="534">{"ids":[1,3]}</text>
+<text class="nb" x="82" y="568">Not a sentence. Not a summary. Two numbers,</text>
+<text class="nb" x="82" y="588">most important first — pieces 1 and 3 above.</text>
+<text class="small" x="82" y="618">It is shown all five pieces. Nothing but numbers is accepted back.</text>
+
+<line x1="526" y1="548" x2="558" y2="548" stroke="#3f6274" stroke-width="2.4" marker-end="url(#ah)"/>
+
+<rect class="card" x="564" y="458" width="460" height="180" rx="12"/>
+<text class="kick" x="586" y="486">CODE LOOKS THEM UP</text>
+<text class="nb" x="586" y="516">piece 1  →  chars 42–71 of your transcript</text>
+<text class="nb" x="586" y="540">piece 3  →  chars 105–151</text>
+<text class="small" x="586" y="572">Then every line is read back against your words,</text>
+<text class="small" x="586" y="592">token by token, in order. Only listed fillers</text>
+<text class="small" x="586" y="612">(“um”, “like”) are allowed to be missing.</text>
+
+<line x1="1030" y1="548" x2="1062" y2="548" stroke="#3f6274" stroke-width="2.4" marker-end="url(#ah)"/>
+
+<rect class="card" x="1068" y="458" width="472" height="180" rx="12"/>
+<text class="kick" x="1090" y="486">YOUR SHEET</text>
+<text class="say3" x="1090" y="518">More like a flutter than pain.</text>
+<text class="mono" x="1090" y="538">source · chars 42–71</text>
+<text class="say3" x="1090" y="574">And I have been so tired for about three weeks.</text>
+<text class="mono" x="1090" y="594">source · chars 105–151</text>
+<text class="small" x="1090" y="622">The only things added: one capital letter and one full stop.</text>
+
+<!-- ROW D/E -->
+<rect x="60" y="672" width="700" height="164" rx="12" fill="#eaeceb" stroke="#c2ccc9" stroke-width="1.2" stroke-dasharray="7 5"/>
+<text class="kick" x="82" y="700">THE USUAL WAY</text>
+<text class="nb" x="82" y="730">You talk → the model writes it up → you are handed sentences</text>
+<text class="nb" x="82" y="752">you did not say, and checking them is your job.</text>
+<text class="small" x="82" y="784">Everything on that page is the model’s output. There is nothing to compare it against,</text>
+<text class="small" x="82" y="804">and no way to see where any single line came from.</text>
+
+<rect x="800" y="672" width="740" height="164" rx="12" fill="#d7e3e5" stroke="#3f6274" stroke-width="1.6"/>
+<text class="lead" x="824" y="714">A sentence you never said has no number.</text>
+<text class="lead2" x="824" y="746">So there is nothing for the model to choose. Fabrication is not filtered out afterwards —</text>
+<text class="lead2" x="824" y="768">in this shape, it has nowhere to get in.</text>
+<text class="small" x="824" y="800" fill="#4b565b">And every line on the sheet still opens the exact place in your own words that it came from.</text>
+</svg>

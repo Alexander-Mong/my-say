@@ -1,0 +1,23 @@
+%% My Say — system context (C4 level 1)
+%% Renders natively in a GitHub README inside a ```mermaid fence.
+flowchart LR
+  classDef person fill:#fafbfa,stroke:#c2ccc9,color:#212a2d
+  classDef sys fill:#e6edef,stroke:#3f6274,stroke-width:2px,color:#212a2d
+  classDef cloud fill:#fafbfa,stroke:#6b4a8a,stroke-dasharray:5 4,color:#212a2d
+
+  P["The patient<br/>getting ready for a doctor's visit"]:::person
+
+  subgraph DEV["YOUR DEVICE — the privacy boundary · works with the network switched off"]
+    direction TB
+    APP["My Say<br/>one browser page + a small local server<br/>no account · no database · no request logs"]:::sys
+    MODEL["Gemma 4 E2B (default) or E4B, via Ollama<br/>three jobs: talk warmly; pick which of the patient's<br/>own numbered clauses belong on the sheet; and, when asked,<br/>suggest a clearer wording for one line that the patient must approve<br/>NEVER asked to write the sheet"]:::sys
+  end
+
+  DOC["Their doctor<br/>reads the sheet the patient hands over"]:::person
+  CLOUD["Cloud model (Nebius)<br/>optional, and labelled on screen:<br/>the words leave the device"]:::cloud
+
+  P -->|uses| APP
+  APP -->|"the conversation, or the numbered pieces"| MODEL
+  MODEL -->|"one short reply, only ids: 3, 7, 1, or a rewording the patient must approve"| APP
+  APP ==>|"THE ONLY THING THAT CROSSES:<br/>the sheet, printed or copied into an email"| DOC
+  APP -.->|"only if the person picks Cloud in the runtime menu"| CLOUD

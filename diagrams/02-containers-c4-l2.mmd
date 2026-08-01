@@ -1,0 +1,29 @@
+%% My Say — containers, two deployments (C4 level 2)
+%% Renders natively in a GitHub README inside a ```mermaid fence.
+flowchart TB
+  classDef box fill:#fafbfa,stroke:#c2ccc9,color:#212a2d
+  classDef sys fill:#e6edef,stroke:#3f6274,stroke-width:2px,color:#212a2d
+  classDef cloud fill:#fafbfa,stroke:#6b4a8a,color:#212a2d
+  classDef plan fill:#fafbfa,stroke:#3f6274,stroke-dasharray:6 5,color:#212a2d
+
+  subgraph A["A · ON-DEVICE — the shipped shape · demo laptop in airplane mode · zero pip installs"]
+    direction TB
+    BROWSER["Web browser<br/>one HTML page, no build step, no external assets<br/>optional mic → editable draft; Send is what commits it"]:::box
+    SERVER["understudy_app.py<br/>Python 3 stdlib http.server<br/>gate/: pipeline · span_check · safety_net · polish<br/>+ /stt: faster-whisper tiny.en, in-memory, never archived (optional)"]:::sys
+    OLLAMA["Ollama<br/>gemma4:e2b (default) · gemma4:e4b<br/>pre-warmed at startup"]:::sys
+    BROWSER -->|"HTTP 127.0.0.1:8077 · /chat /sheet /polish /export /stt"| SERVER
+    SERVER -->|"HTTP localhost:11434 · /api/chat"| OLLAMA
+  end
+
+  subgraph B["B · HOSTED PREVIEW — the QR link · banner on every page says it runs in the cloud"]
+    direction TB
+    PHONE["Phone browsers<br/>whoever scans the QR code, no login"]:::box
+    EDGE["Small VPS · demo subdomain<br/>TLS · noindex · proxies to whichever surface is live"]:::box
+    MYSAY["the same understudy_app.py<br/>run as a service, one env away<br/>UNDERSTUDY_HOSTED=1 · bound to localhost"]:::sys
+    CLOUDM["Hosted model backend<br/>labeled in the UI; the words leave the device"]:::cloud
+    SANDBOX["PLANNED — CPU sandbox, small vCPU/RAM budget<br/>understudy_app.py + ollama serve + Gemma 4 E2B<br/>GGUF pulled from Hugging Face, CPU only"]:::plan
+    PHONE -->|HTTPS| EDGE
+    EDGE -->|proxied to the local app port| MYSAY
+    MYSAY -->|HTTPS| CLOUDM
+    EDGE -.->|"planned: proxy to the sandbox preview URL"| SANDBOX
+  end

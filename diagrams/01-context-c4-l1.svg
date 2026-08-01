@@ -1,0 +1,108 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 820" width="1440" height="820" role="img" aria-label="My Say system context diagram">
+<title>My Say — system context (C4 level 1)</title>
+<style>
+ text{font-family:'Segoe UI',Optima,Candara,Calibri,'Noto Sans',Arial,Helvetica,sans-serif;fill:#212a2d}
+ .h1{font-size:27px;font-weight:650;letter-spacing:-.3px}
+ .sub{font-size:14px;fill:#4b565b}
+ .kick{font-size:10.5px;font-weight:700;letter-spacing:1.5px;fill:#8b969b}
+ .kicka{font-size:10.5px;font-weight:700;letter-spacing:1.5px;fill:#294d5a}
+ .kickc{font-size:10.5px;font-weight:700;letter-spacing:1.5px;fill:#6b4a8a}
+ .bt{font-size:18px;font-weight:650}
+ .bt2{font-size:15px;font-weight:650}
+ .body{font-size:13px;fill:#4b565b}
+ .small{font-size:11.5px;fill:#8b969b}
+ .lbl{font-size:12.5px;fill:#4b565b}
+ .lbla{font-size:13px;fill:#294d5a}
+ .lblc{font-size:12.5px;fill:#6b4a8a}
+ .em{font-size:13px;font-weight:650;fill:#294d5a}
+ .mono{font-family:Consolas,'Cascadia Mono','DejaVu Sans Mono',monospace;font-size:12px;fill:#294d5a}
+ .card{fill:#fafbfa;stroke:#c2ccc9;stroke-width:1.2}
+ .cardt{fill:#e6edef;stroke:#c2ccc9;stroke-width:1.2}
+</style>
+<defs>
+ <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#3f6274"/></marker>
+ <marker id="ahc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6b4a8a"/></marker>
+ <marker id="ahs" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#8b969b"/></marker>
+</defs>
+
+<rect width="1440" height="820" fill="#f1f4f3"/>
+
+<text class="h1" x="44" y="54">My Say — system context</text>
+<text class="sub" x="44" y="80">C4 level 1 · who touches the system, and the one thing that leaves the device</text>
+<line x1="44" y1="102" x2="1396" y2="102" stroke="#dae1df" stroke-width="1"/>
+
+<!-- PERSON -->
+<rect class="card" x="44" y="330" width="178" height="140" rx="12"/>
+<text class="kick" x="62" y="358">PERSON</text>
+<text class="bt" x="62" y="384">The patient</text>
+<text class="body" x="62" y="410">Getting ready for a</text>
+<text class="body" x="62" y="428">doctor&#8217;s visit. Often</text>
+<text class="body" x="62" y="446">nervous about saying</text>
+<text class="body" x="62" y="464">the hard thing.</text>
+
+<line x1="224" y1="400" x2="259" y2="400" stroke="#3f6274" stroke-width="2" marker-end="url(#ah)"/>
+<text class="small" x="228" y="392">uses</text>
+
+<!-- DEVICE BOUNDARY -->
+<rect x="265" y="140" width="620" height="500" rx="16" fill="#e9eff0" stroke="#3f6274" stroke-width="2" stroke-dasharray="9 6"/>
+<text class="kicka" x="291" y="172">YOUR DEVICE &#8212; THE PRIVACY BOUNDARY</text>
+<text class="small" x="291" y="192">phone or laptop &#183; the demo runs it in airplane mode</text>
+
+<rect class="card" x="293" y="214" width="564" height="146" rx="12"/>
+<text class="kick" x="313" y="240">SOFTWARE SYSTEM</text>
+<text class="bt" x="313" y="266">My Say</text>
+<text class="body" x="313" y="292">A warm, private conversation that draws out what&#8217;s hard to say &#8212; then</text>
+<text class="body" x="313" y="312">assembles a sheet for the doctor out of the patient&#8217;s own words, with a</text>
+<text class="body" x="313" y="332">receipt on every line. A page in the browser plus a small local server.</text>
+
+<line x1="575" y1="364" x2="575" y2="426" stroke="#3f6274" stroke-width="2" marker-start="url(#ah)" marker-end="url(#ah)"/>
+<text class="lbl" x="600" y="378">&#8595; the conversation &#183; or the numbered pieces</text>
+<text class="lbl" x="600" y="398">&#8593; one short reply &#183; or only <tspan class="mono">{"ids":[3,7,1]}</tspan></text>
+<text class="lbl" x="600" y="418">&#8593; or a rewording the patient must approve</text>
+
+<rect class="card" x="293" y="430" width="564" height="154" rx="12"/>
+<text class="kick" x="313" y="456">ON-DEVICE MODEL</text>
+<text class="bt" x="313" y="482">Gemma 4 E2B (default) &#183; E4B</text>
+<text class="body" x="313" y="506">Served by Ollama on this same machine. Three jobs: talk warmly; pick which</text>
+<text class="body" x="313" y="526">of the patient&#8217;s own numbered clauses belong on the sheet; and, only when</text>
+<text class="body" x="313" y="546">asked, suggest a clearer wording for one line, which the patient must approve.</text>
+<text class="em" x="313" y="572">It is never asked to write the sheet.</text>
+
+<text class="small" x="293" y="612">no account &#183; no database &#183; no request logs &#183; works with the network switched off</text>
+
+<!-- crossing gate -->
+<circle cx="885" cy="318" r="8" fill="#f1f4f3" stroke="#3f6274" stroke-width="2"/>
+<line x1="893" y1="318" x2="1214" y2="318" stroke="#3f6274" stroke-width="2.5" marker-end="url(#ah)"/>
+<text class="kicka" x="1053" y="272" text-anchor="middle">THE ONLY THING THAT CROSSES</text>
+<text class="lbla" x="1053" y="298" text-anchor="middle">the sheet &#8212; printed, or copied into an email</text>
+<text class="small" x="1053" y="344" text-anchor="middle">the patient decides what is on it, and presses the button</text>
+
+<!-- DOCTOR -->
+<rect class="card" x="1222" y="250" width="176" height="132" rx="12"/>
+<text class="kick" x="1240" y="278">PERSON</text>
+<text class="bt" x="1240" y="304">Their doctor</text>
+<text class="body" x="1240" y="330">Reads the sheet the</text>
+<text class="body" x="1240" y="348">patient hands them</text>
+<text class="body" x="1240" y="366">at the visit.</text>
+
+<!-- CLOUD -->
+<line x1="889" y1="552" x2="1214" y2="552" stroke="#6b4a8a" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#ahc)"/>
+<text class="lblc" x="1051" y="514" text-anchor="middle">only if the person picks &#8220;Cloud&#8221;</text>
+<text class="small" x="1051" y="534" text-anchor="middle">the page says, on screen, that the words are leaving</text>
+
+<rect x="1222" y="470" width="176" height="158" rx="12" fill="#fafbfa" stroke="#6b4a8a" stroke-width="1.4" stroke-dasharray="6 4"/>
+<text class="kickc" x="1240" y="498">OPTIONAL</text>
+<text class="bt2" x="1240" y="524">Cloud model</text>
+<text class="body" x="1240" y="550">Nebius, over the</text>
+<text class="body" x="1240" y="568">internet. Chosen in</text>
+<text class="body" x="1240" y="586">the runtime menu.</text>
+<text class="body" x="1240" y="604">The words leave</text>
+<text class="body" x="1240" y="622">the device.</text>
+
+<!-- NOTES -->
+<line x1="44" y1="690" x2="1396" y2="690" stroke="#dae1df" stroke-width="1"/>
+<text class="kick" x="44" y="716">NOTES</text>
+<text class="lbl" x="44" y="744">&#183; The shipped shape is the one drawn above: the model sits on the device, and the sheet is the only artifact that ever leaves it.</text>
+<text class="lbl" x="44" y="766">&#183; A hosted preview exists so anyone can try it from a phone (QR link). That one runs in the cloud and says so in a banner on every page.</text>
+<text class="lbl" x="44" y="788">&#183; Nothing is stored. On the preview build only, pressing &#8220;Share your thoughts&#8221; sends that one conversation to the builder &#8212; never automatically.</text>
+</svg>

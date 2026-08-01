@@ -1,0 +1,209 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1080" width="1600" height="1080" role="img" aria-label="Component diagram of the My Say gate">
+<title>Inside the gate — components (C4 level 3)</title>
+<style>
+ text{font-family:'Segoe UI',Optima,Candara,Calibri,'Noto Sans',Arial,Helvetica,sans-serif;fill:#212a2d}
+ .h1{font-size:27px;font-weight:650;letter-spacing:-.3px}
+ .sub{font-size:14px;fill:#4b565b}
+ .band{font-size:12px;font-weight:700;letter-spacing:1.6px;fill:#294d5a}
+ .bandr{font-size:12px;font-weight:700;letter-spacing:1.6px;fill:#7c433c}
+ .kick{font-size:10px;font-weight:700;letter-spacing:1.3px;fill:#8b969b}
+ .nt{font-size:14.5px;font-weight:650}
+ .nb{font-size:11px;fill:#4b565b}
+ .pill{font-size:9px;font-weight:700;letter-spacing:1.1px;fill:#8b969b}
+ .pilla{font-size:9px;font-weight:700;letter-spacing:1.1px;fill:#294d5a}
+ .ct{font-size:16px;font-weight:650}
+ .cb{font-size:12px;fill:#4b565b}
+ .small{font-size:11.5px;fill:#8b969b}
+ .lead{font-size:15px;font-weight:650;fill:#1e3944}
+ .lead2{font-size:13px;fill:#294d5a}
+ .mono{font-family:Consolas,'Cascadia Mono','DejaVu Sans Mono',monospace;font-size:11px;fill:#294d5a}
+ .card{fill:#fafbfa;stroke:#c2ccc9;stroke-width:1.2}
+</style>
+<defs>
+ <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#3f6274"/></marker>
+ <marker id="ahr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#7c433c"/></marker>
+</defs>
+<rect width="1600" height="1080" fill="#f1f4f3"/>
+
+<text class="h1" x="44" y="54">Inside the gate — components</text>
+<text class="sub" x="44" y="80">C4 level 3 · every box below is real code in gate/. The one box the model touches is marked.</text>
+<line x1="44" y1="102" x2="1556" y2="102" stroke="#dae1df" stroke-width="1"/>
+
+<!-- ===================== BAND 1 ===================== -->
+<text class="band" x="60" y="136">1 · THE SHEET PATH — WHERE THE GUARANTEE LIVES</text>
+
+<rect class="card" x="60" y="156" width="178" height="184" rx="10"/>
+<rect x="168" y="168" width="56" height="16" rx="8" fill="#eef2f1"/><text class="pill" x="196" y="180" text-anchor="middle">CODE</text>
+<text class="kick" x="76" y="182">STEP 1</text>
+<text class="nt" x="76" y="206">Transcript</text>
+<text class="nb" x="76" y="230">Patient turns only. The</text>
+<text class="nb" x="76" y="246">server joins the messages</text>
+<text class="nb" x="76" y="262">whose role is “user”.</text>
+<text class="nb" x="76" y="286">Anything the assistant said</text>
+<text class="nb" x="76" y="302">is left out — it would</text>
+<text class="nb" x="76" y="318">otherwise verify as theirs.</text>
+
+<line x1="242" y1="248" x2="268" y2="248" stroke="#3f6274" stroke-width="2" marker-end="url(#ah)"/>
+
+<rect class="card" x="274" y="156" width="178" height="184" rx="10"/>
+<rect x="382" y="168" width="56" height="16" rx="8" fill="#eef2f1"/><text class="pill" x="410" y="180" text-anchor="middle">CODE</text>
+<text class="kick" x="290" y="182">STEP 2</text>
+<text class="nt" x="290" y="206">segment()</text>
+<text class="nb" x="290" y="230">Splits the transcript into</text>
+<text class="nb" x="290" y="246">numbered clauses. Every</text>
+<text class="nb" x="290" y="262">piece is a candidate.</text>
+<text class="nb" x="290" y="286">Each one carries its own</text>
+<text class="nb" x="290" y="302">character offsets — those</text>
+<text class="nb" x="290" y="318">become the receipt.</text>
+
+<line x1="456" y1="248" x2="482" y2="248" stroke="#3f6274" stroke-width="2" marker-end="url(#ah)"/>
+
+<rect x="488" y="156" width="178" height="184" rx="10" fill="#e6edef" stroke="#3f6274" stroke-width="1.8"/>
+<rect x="596" y="168" width="56" height="16" rx="8" fill="#d7e3e5"/><text class="pilla" x="624" y="180" text-anchor="middle">MODEL</text>
+<text class="kick" x="504" y="182">STEP 3</text>
+<text class="nt" x="504" y="206">Gemma selects</text>
+<text class="nb" x="504" y="230">Reads the numbered</text>
+<text class="nb" x="504" y="246">pieces. Answers with:</text>
+<text class="mono" x="504" y="270">{"ids":[3,7,1]}</text>
+<text class="nb" x="504" y="294">Most important first.</text>
+<text class="nb" x="504" y="310">It emits no patient words</text>
+<text class="nb" x="504" y="326">at all — only numbers.</text>
+
+<line x1="670" y1="248" x2="696" y2="248" stroke="#3f6274" stroke-width="2" marker-end="url(#ah)"/>
+
+<rect class="card" x="702" y="156" width="178" height="184" rx="10"/>
+<rect x="810" y="168" width="56" height="16" rx="8" fill="#eef2f1"/><text class="pill" x="838" y="180" text-anchor="middle">CODE</text>
+<text class="kick" x="718" y="182">STEP 4</text>
+<text class="nt" x="718" y="206">_parse_ids()</text>
+<text class="nb" x="718" y="230">Pulls the numbers out</text>
+<text class="nb" x="718" y="246">tolerantly, then discards</text>
+<text class="nb" x="718" y="262">anything out of range —</text>
+<text class="nb" x="718" y="278">and counts what it dropped.</text>
+<text class="nb" x="718" y="302">An invented number still</text>
+<text class="nb" x="718" y="318">cannot invent text.</text>
+
+<line x1="884" y1="248" x2="910" y2="248" stroke="#3f6274" stroke-width="2" marker-end="url(#ah)"/>
+
+<rect class="card" x="916" y="156" width="178" height="184" rx="10"/>
+<rect x="1024" y="168" width="56" height="16" rx="8" fill="#eef2f1"/><text class="pill" x="1052" y="180" text-anchor="middle">CODE</text>
+<text class="kick" x="932" y="182">STEP 5</text>
+<text class="nt" x="932" y="206">assemble()</text>
+<text class="nb" x="932" y="230">Looks each id up in the</text>
+<text class="nb" x="932" y="246">patient’s own candidates</text>
+<text class="nb" x="932" y="262">and builds the lines.</text>
+<text class="nb" x="932" y="286">Two changes allowed, ever:</text>
+<text class="nb" x="932" y="302">a capital letter, and a full</text>
+<text class="nb" x="932" y="318">stop. Grammar is left alone.</text>
+
+<line x1="1098" y1="248" x2="1124" y2="248" stroke="#3f6274" stroke-width="2" marker-end="url(#ah)"/>
+
+<rect class="card" x="1130" y="156" width="178" height="184" rx="10"/>
+<rect x="1238" y="168" width="56" height="16" rx="8" fill="#eef2f1"/><text class="pill" x="1266" y="180" text-anchor="middle">CODE</text>
+<text class="kick" x="1146" y="182">STEP 6</text>
+<text class="nt" x="1146" y="206">verify_span()</text>
+<text class="nb" x="1146" y="230">Checks every line back</text>
+<text class="nb" x="1146" y="246">against the transcript,</text>
+<text class="nb" x="1146" y="262">token by token, in order.</text>
+<text class="nb" x="1146" y="286">Only listed fillers may be</text>
+<text class="nb" x="1146" y="302">dropped. Returns the exact</text>
+<text class="nb" x="1146" y="318">offsets the sheet shows.</text>
+
+<line x1="1312" y1="248" x2="1338" y2="248" stroke="#3f6274" stroke-width="2" marker-end="url(#ah)"/>
+
+<rect class="card" x="1344" y="156" width="178" height="184" rx="10"/>
+<rect x="1452" y="168" width="56" height="16" rx="8" fill="#eef2f1"/><text class="pill" x="1480" y="180" text-anchor="middle">CODE</text>
+<text class="kick" x="1360" y="182">STEP 7</text>
+<text class="nt" x="1360" y="206">The sheet</text>
+<text class="nb" x="1360" y="230">One row per line:</text>
+<text class="nb" x="1360" y="246">text · tier · start–end ·</text>
+<text class="nb" x="1360" y="262">verified · chosen_by.</text>
+<text class="nb" x="1360" y="286">“source” opens the</text>
+<text class="nb" x="1360" y="302">transcript with that span</text>
+<text class="nb" x="1360" y="318">highlighted in place.</text>
+
+<rect x="60" y="362" width="1462" height="66" rx="10" fill="#d7e3e5" stroke="#3f6274" stroke-width="1.2"/>
+<text class="lead" x="82" y="390">The model’s entire output is a list of numbers.</text>
+<text class="lead2" x="82" y="414">Every word on the sheet is fetched from the patient’s own transcript by code — so a sentence they never said has no number to be chosen by. Fabrication is not detected afterwards; it has nowhere to get in.</text>
+
+<!-- ===================== BAND 2 ===================== -->
+<text class="band" x="60" y="470">2 · WHAT SURROUNDS THE PATH</text>
+
+<rect class="card" x="60" y="488" width="464" height="308" rx="12"/>
+<text class="kick" x="82" y="516">GATE/PIPELINE.PY + THE PAGE</text>
+<text class="ct" x="82" y="542">The patient is ground truth</text>
+<text class="cb" x="82" y="572">· Everything they said that is <tspan font-weight="650">not</tspan> on the sheet comes back</text>
+<text class="cb" x="94" y="592">too, as a list they can add from. Veto isn’t control.</text>
+<text class="cb" x="82" y="616">· A line they add is tagged chosen_by: patient — stronger</text>
+<text class="cb" x="94" y="636">provenance than a model-selected one, same verified words.</text>
+<text class="cb" x="82" y="660">· Deleting a line removes it. Its text is suppressed from the</text>
+<text class="cb" x="94" y="680">safety-cue block too, so it cannot reappear under another</text>
+<text class="cb" x="94" y="700">heading. Every change is undoable.</text>
+<text class="cb" x="82" y="724">· /export re-derives the sheet from the transcript plus the</text>
+<text class="cb" x="94" y="744">ids still on screen. No model call, and no trust in what</text>
+<text class="cb" x="94" y="764">the browser is holding.</text>
+<text class="small" x="82" y="786">Known limit: the emailed copy is verbatim-only — it carries no polished lines.</text>
+
+<rect class="card" x="559" y="488" width="464" height="308" rx="12"/>
+<text class="kick" x="581" y="516">GATE/SAFETY_NET.PY</text>
+<text class="ct" x="581" y="542">Always in the letter</text>
+<text class="cb" x="581" y="572">· Runs on every sheet, matched or not. A letter that only</text>
+<text class="cb" x="593" y="592">sometimes carries safety text teaches people that its</text>
+<text class="cb" x="593" y="612">absence means “nothing to worry about”.</text>
+<text class="cb" x="581" y="636">· Criteria are quoted verbatim from NHLBI, MedlinePlus</text>
+<text class="cb" x="593" y="656">and NIDDK, with each source’s own instruction as the</text>
+<text class="cb" x="593" y="676">header — NIDDK’s “seek medical help right away” is never</text>
+<text class="cb" x="593" y="696">upgraded into “call 911”.</text>
+<text class="cb" x="581" y="720">· The sentences that pulled a topic in are carried into the</text>
+<text class="cb" x="593" y="740">letter in the patient’s own words, even if they waved it off.</text>
+<text class="cb" x="581" y="764">· Self-harm cues show the 988 line. One shared pattern list.</text>
+<text class="small" x="581" y="786">No model runs anywhere in this file. It cannot be edited away by one either.</text>
+
+<rect class="card" x="1058" y="488" width="464" height="308" rx="12"/>
+<text class="kick" x="1080" y="516">GATE/POLISH.PY  ·  /POLISH</text>
+<text class="ct" x="1080" y="542">“Say it better for me”</text>
+<text class="cb" x="1080" y="572">· For people who <tspan font-weight="650">want</tspan> help with wording. The model drafts</text>
+<text class="cb" x="1092" y="592">one line at a time; the original stays visible above it.</text>
+<text class="cb" x="1080" y="616">· Hard gate: a draft that introduces a clinical word the</text>
+<text class="cb" x="1092" y="636">patient didn’t use is suppressed outright, never shown.</text>
+<text class="cb" x="1080" y="660">· Soft gates: a dropped number, a lost “not”, a hedge turned</text>
+<text class="cb" x="1092" y="680">certain, or a slip out of “I” all surface as caution chips.</text>
+<text class="cb" x="1080" y="704">· The patient accepts or rejects each line. An accepted one</text>
+<text class="cb" x="1092" y="724">is labelled “said with help — approved by me”, and its</text>
+<text class="cb" x="1092" y="744">receipt still opens the verbatim original.</text>
+<text class="small" x="1080" y="768">Evidence: an 80-cell test — 0 clinical-vocab escalations</text>
+<text class="small" x="1080" y="786">in 80 drafts, across four model families.</text>
+
+<!-- ===================== BAND 3 ===================== -->
+<text class="bandr" x="60" y="836">3 · ESCALATION — DESIGNED AND SOURCED, NOT YET WIRED INTO THE APP</text>
+
+<rect x="60" y="852" width="1462" height="196" rx="12" fill="#fafbfa" stroke="#7c433c" stroke-width="1.4" stroke-dasharray="7 5"/>
+<rect x="82" y="874" width="292" height="82" rx="8" fill="#eef2f1" stroke="#dae1df"/>
+<text class="nt" x="98" y="902" font-size="13.5">What the patient said</text>
+<text class="nb" x="98" y="924">the transcript, exactly as</text>
+<text class="nb" x="98" y="940">it is used everywhere else</text>
+
+<line x1="378" y1="915" x2="404" y2="915" stroke="#7c433c" stroke-width="2" marker-end="url(#ahr)"/>
+
+<rect x="410" y="874" width="330" height="82" rx="8" fill="#e6edef" stroke="#3f6274" stroke-width="1.4"/>
+<text class="nt" x="426" y="902" font-size="13.5">MODEL — detects only</text>
+<text class="nb" x="426" y="924">flags that a trigger category may be present.</text>
+<text class="nb" x="426" y="940">A low bar, deliberately biased to over-flag.</text>
+
+<line x1="744" y1="915" x2="770" y2="915" stroke="#7c433c" stroke-width="2" marker-end="url(#ahr)"/>
+
+<rect x="776" y="874" width="330" height="82" rx="8" fill="#eef2f1" stroke="#dae1df"/>
+<text class="nt" x="792" y="902" font-size="13.5">RULE TABLE — decides</text>
+<text class="nb" x="792" y="924">NIMH ASQ (4 items + 1 conditional), plus 14</text>
+<text class="nb" x="792" y="940">sourced rules. Deterministic, auditable.</text>
+
+<line x1="1110" y1="915" x2="1136" y2="915" stroke="#7c433c" stroke-width="2" marker-end="url(#ahr)"/>
+
+<rect x="1142" y="874" width="358" height="82" rx="8" fill="#eef2f1" stroke="#dae1df"/>
+<text class="nt" x="1158" y="902" font-size="13.5">Route, and keep the receipt</text>
+<text class="nb" x="1158" y="924">emergency now / same day / routine — with the</text>
+<text class="nb" x="1158" y="940">borderline non-triggers logged for audit.</text>
+
+<text class="lead2" x="82" y="988" font-size="14" font-weight="650">The model can raise a flag. It is never the last step before “no escalation.”</text>
+<text class="small" x="82" y="1012">Today the app ships the honest small version: self-harm patterns show the 988 line and carry the patient’s own sentence into the letter.</text>
+<text class="small" x="82" y="1030">There is no escalation decision in the shipped code at all — the box above is a validated design, drawn here so nobody mistakes it for one.</text>
+</svg>

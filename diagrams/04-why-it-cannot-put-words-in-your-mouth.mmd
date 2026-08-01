@@ -1,0 +1,18 @@
+%% Why it cannot put words in your mouth — plain-text fallback for the designed SVG.
+%% Prefer 04-why-it-cannot-put-words-in-your-mouth.svg in the README; this exists so the
+%% point survives anywhere mermaid is the only thing that renders.
+flowchart LR
+  classDef mine fill:#d7e3e5,stroke:#3f6274,stroke-width:2px,color:#1e3944
+  classDef code fill:#fafbfa,stroke:#c2ccc9,color:#212a2d
+  classDef model fill:#e6edef,stroke:#3f6274,stroke-width:2px,color:#212a2d
+
+  V["Spoken words (optional)<br/>mic → editable draft → the person approves → Send"]:::code
+  W["What you said<br/>'more like a flutter than pain'"]:::mine
+  C["Code cuts it into numbered pieces<br/>piece 1 = chars 42 to 71 of your own transcript"]:::code
+  M["The model's entire answer<br/>ids: 1, 3<br/>not a sentence, not a summary — numbers"]:::model
+  L["Code fetches piece 1 and piece 3 from YOUR words<br/>then reads each one back, token by token"]:::code
+  S["Your sheet<br/>'More like a flutter than pain.'<br/>source: chars 42 to 71"]:::mine
+  R["A sentence you never said has no number,<br/>so there is nothing for the model to choose.<br/>Fabrication is not filtered out — it has nowhere to get in."]:::mine
+
+  V -.-> W
+  W --> C --> M --> L --> S --> R
