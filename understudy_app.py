@@ -1468,12 +1468,26 @@ if(!('ontouchstart' in window)){const _ta=document.getElementById('inp');if(_ta)
 // accommodations and diary panels through their real state paths, and builds the sheet. It
 // stops there ON PURPOSE: pin / add-back / delete-undo are the patient-control story, and that
 // story belongs to a human hand. Without the URL param no button exists.
-const DEMO_ON=QS.get('demo')==='1';
+const DEMO_SCRIPT=QS.get('demo');                       // '1' = original walkthrough, 'priya' = the Priya preload
+const DEMO_ON=DEMO_SCRIPT==='1'||DEMO_SCRIPT==='priya';
 let DEMO_RUN=false;
 const DEMO_T1="I've been getting headaches for about three weeks, mostly mornings.";
 const DEMO_T2="It's probably nothing, I've just been tired. But they're worse when I bend over, and honestly I'm scared because my dad had something like this.";
 const DEMO_ACCOM=["Please let me read the plan written down before I leave."];
 const DEMO_DIARY=["Tue — 2/10 — mostly fine","Wed — 8/10 — had to sit in the dark before work","Fri — 6/10 — woke with it, neck stiff too"];
+// ?demo=priya — the Priya Raman preload (synthetic persona; validated 2026-08-01: deep reasoning
+// ON is what reliably selects the prescription confession; typos are canon, never clean them up).
+const PRIYA_TURNS=[
+ "hi. so I have a doctor appointment tuesday at 9:15 and I have been putting this off for a long time. its my stomache. its been about 8 months now, on and off. not constant. some weeks are fine and then a week where its bad most days. I keep almost making the appointment and then not making it.",
+ "its like a cramping ache, mostly upper left side, sometimes after eating but honestly not always. I actually started a spreadsheet becuase I wanted to see if there was a pattern. 41 entries so far. it looks worse in weeks where I sleep badly, I think. I know how that sounds. im a data analyst, its how I cope.",
+ "the reason I havent been back isnt the pain though. the last doctor talked really fast and typed while he was asking me things, and I run about half a second behind a fast conversation. by the time I had my answer ready he had already moved on to the next question. he asked if I wanted to start a medication and I said yes, becuase saying yes ended the conversation.",
+ "heres the part I actually need him to know, becuase I never managed to say it. I filled the prescription but I never took it, not once. its still in the bag in a kitchen drawer. so whatever he thinks we started 8 months ago never actually started.",
+ "also, im autistic. diagnosed at 29. thats a big part of why fast appointments dont work for me. I can answer anything if I get a second to think first.",
+ "one more thing that I havent said out loud to anyone. after that last appointment I sat in my car in the parking garage for almost an hour before I could drive. just sat there and cried. it felt like part of this though, so im saying it."];
+// Matched by prefix against ACCOM_OPTIONS at runtime so a wording tweak in the curated list
+// cannot silently desync an index; falls back to a typed entry if a prefix stops matching.
+const PRIYA_ACCOM=["I process info","Write things down","I mask when"];
+const PRIYA_DIARY=["Mon — 2/10 — fine, quiet week","Wed — 7/10 — bad after lunch, logged it","Sat — 5/10 — dull ache most of the day"];
 function demoSleep(ms){return new Promise(r=>setTimeout(r,ms));}
 async function demoType(text){inp.focus();inp.value='';
  for(let i=0;i<text.length;i++){inp.value+=text[i];if(i%3===0)await demoSleep(16);}
@@ -1484,14 +1498,26 @@ async function runDemo(){
  try{
   if(SHEET||msgs.length>1)reset();
   await demoSleep(600);
-  await demoType(DEMO_T1);await send();
-  await demoSleep(1000);
-  await demoType(DEMO_T2);await send();
-  await demoSleep(800);
-  for(const a of DEMO_ACCOM){ACCOM.push({id:ACCOM_SEQ++,text:a,source:'typed'});}
-  renderAccom();await demoSleep(800);
-  for(const d of DEMO_DIARY){DIARY.push({id:DIARY_SEQ++,text:d});}
-  renderDiary();await demoSleep(1000);
+  const priya=DEMO_SCRIPT==='priya';
+  const turns=priya?PRIYA_TURNS:[DEMO_T1,DEMO_T2];
+  for(const t of turns){await demoType(t);await send();await demoSleep(1000);}
+  if(priya){
+   for(const p of PRIYA_ACCOM){
+    const i=ACCOM_OPTIONS.findIndex(s=>s.indexOf(p)===0);
+    if(i>=0){toggleAccomOption(i);}
+    else{ACCOM.push({id:ACCOM_SEQ++,text:p,source:'typed'});renderAccom();}
+    await demoSleep(400);}
+   for(const d of PRIYA_DIARY){DIARY.push({id:DIARY_SEQ++,text:d});}
+   renderDiary();await demoSleep(800);
+   // deep reasoning ON before the build — validated as the setting that reliably selects the
+   // hard sentence (2026-08-01 runs); expect the build to take ~2-3 min on CPU
+   const dp=document.getElementById('deep');if(dp)dp.checked=true;
+  }else{
+   for(const a of DEMO_ACCOM){ACCOM.push({id:ACCOM_SEQ++,text:a,source:'typed'});}
+   renderAccom();await demoSleep(800);
+   for(const d of DEMO_DIARY){DIARY.push({id:DIARY_SEQ++,text:d});}
+   renderDiary();await demoSleep(1000);
+  }
   await makeSheet();
  }finally{DEMO_RUN=false;if(b){b.disabled=false;b.textContent='▶ run demo';}}
 }
