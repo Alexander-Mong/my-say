@@ -429,7 +429,8 @@ def assemble_from_ids(transcript: str, ids: list[int], _cands=None,
                       app_name: str = "My Say",
                       chip_spans: list[list[int]] | None = None,
                       accommodations: list[str] | None = None,
-                      diary: list[str] | None = None) -> dict:
+                      diary: list[str] | None = None,
+                      after: list[str] | None = None) -> dict:
     """The deterministic half of build_sheet, callable on its own. NO MODEL IS INVOLVED.
 
     CHIP PROVENANCE (design review, 2026-08-01). `chosen_by` above answers "who put this line on
@@ -550,6 +551,9 @@ def assemble_from_ids(transcript: str, ids: list[int], _cands=None,
         # normalization as accommodations: every entry is a number the patient chose plus words
         # they typed -- patient-authored by construction, no candidate, no receipt.
         "diary": _clean_accommodations(diary),
+        # AFTER MY VISIT (2026-08-01): answered follow-up questions -- every answer chosen or
+        # typed by the patient, same authorship rule and normalization as accommodations.
+        "after": _clean_accommodations(after),
         "stats": {
             "n_candidates": len(cands),
             "n_selected": len(ids),
@@ -680,6 +684,11 @@ def render_text(sheet: dict) -> str:
     if sheet.get("diary"):
         out.append("[My week, day by day — numbers I chose myself, 0–10:] "
                    + " ".join(sheet["diary"]))
+    # After-visit answers: unbracketed for the same reason -- every one is an answer the patient
+    # chose or typed; only the heading is the product's.
+    if sheet.get("after"):
+        out.append("[After my visit — my questions and answers, in my words:] "
+                   + " ".join(sheet["after"]))
     for tier in ("primary", "secondary", "context"):
         rows = [l for l in sheet["lines"] if l["tier"] == tier]
         if rows:

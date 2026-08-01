@@ -256,7 +256,9 @@ TOPIC_CUES = {
     "anaphylaxis": ("allerg", "swell", "throat", "tongue", "sting", "rash", "hives", "reaction"),
     "gi_bleed": ("blood", "bleed", "stool", "poo", "vomit", "sick", "black", "stomach", "bowel"),
     "sepsis": ("fever", "temperature", "shiver", "confus", "rash", "infection", "chills"),
-    "headache": ("headache", "head", "migraine", "worst"),
+    # "forehead" listed explicitly: boundary matching (relevant_topics) no longer reaches the
+    # "head" inside it.
+    "headache": ("headache", "head", "forehead", "migraine", "worst"),
 }
 # SELF-HARM CUES — ONE SOURCE OF TRUTH, deliberately.
 # Bug found 2026-07-26 before shipping: the agent had its own regex list and this module had its
@@ -289,8 +291,14 @@ SELF_HARM_PATTERNS = (
 
 
 def relevant_topics(text: str) -> list[str]:
+    import re as _re
     t = " ".join(text.lower().split())
-    return [e.topic for e in NET if any(c in t for c in TOPIC_CUES.get(e.topic, ()))]
+    # Left word-boundary, not raw substring: "ahead" must not fire "head" (it printed a
+    # headache/aneurysm block into a stomach-pain letter, found 2026-08-01), "pharmacy" must
+    # not fire "arm", "shampoo" must not fire "poo", "surface" must not fire "face". Cues stay
+    # prefix-stems on purpose: r"\bsqueez" still matches "squeezing", "confus" -> "confused".
+    return [e.topic for e in NET
+            if any(_re.search(r"\b" + _re.escape(c), t) for c in TOPIC_CUES.get(e.topic, ()))]
 
 
 def mentions_self_harm(text: str) -> bool:

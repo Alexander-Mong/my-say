@@ -461,9 +461,17 @@ PAGE = """<!doctype html><html data-theme=blue><head><meta charset=utf-8><title>
  .tagline{font-family:var(--font-serif);font-style:italic;font-size:12.5px;color:var(--ink-faint);letter-spacing:.005em}
  .ctrls{display:flex;align-items:center;flex-wrap:wrap;gap:var(--sp-5);font-size:12px;color:var(--ink-soft)}
  .ctrl-select{display:flex;align-items:center;gap:var(--sp-2);font-variant-caps:all-small-caps;letter-spacing:.02em}
- .ctrl-select select{font:inherit;font-size:12.5px;color:var(--ink-soft);background:transparent;
-  border:none;border-bottom:1px dotted var(--rule-strong);padding:2px 2px 3px 4px;cursor:pointer}
- .ctrl-select select:hover{color:var(--ink);border-bottom-color:var(--ink-soft)}
+ /* The picker is the product's promise made operable -- it reads as a real control now (pill,
+    not a dotted underline a stranger reads as decoration). 2026-08-01 UX pass. */
+ .ctrl-select select{font:inherit;font-size:12.5px;color:var(--ink);background:var(--paper-sheet);
+  border:1px solid var(--rule-strong);border-radius:var(--r-pill);padding:5px 10px;cursor:pointer;
+  transition:border-color var(--dur) var(--ease)}
+ .ctrl-select select:hover{border-color:var(--accent)}
+ .ctrl-more>summary{list-style:none;cursor:pointer;border:1px solid var(--rule-strong);
+  border-radius:var(--r-pill);padding:5px 12px;color:var(--ink-soft);
+  transition:color var(--dur) var(--ease),border-color var(--dur) var(--ease)}
+ .ctrl-more>summary::-webkit-details-marker{display:none}
+ .ctrl-more>summary:hover{color:var(--ink);border-color:var(--accent)}
  .ctrl-toggle{display:flex;align-items:center;gap:6px;cursor:pointer;font-variant-caps:all-small-caps;letter-spacing:.02em}
  .ctrl-toggle input{accent-color:var(--accent)}
 
@@ -562,7 +570,13 @@ PAGE = """<!doctype html><html data-theme=blue><head><meta charset=utf-8><title>
   color:var(--ink-soft);cursor:pointer;white-space:nowrap;transition:color var(--dur) var(--ease),
   border-color var(--dur) var(--ease)}
  .btn-resay:hover{border-color:var(--ink);color:var(--ink)}
- .actions{display:flex;gap:var(--sp-2);margin-top:var(--sp-3);flex-wrap:wrap}
+ /* One cohesive toolbar instead of five floating buttons (2026-08-01 UX pass): quiet tinted bar,
+    primary action leading, ghosts grouped, "Start over" pushed to the far edge so the
+    destructive action is never a neighbor of the productive ones. */
+ .actions{display:flex;align-items:center;gap:var(--sp-2);margin-top:var(--sp-3);flex-wrap:wrap;
+  padding:var(--sp-2) var(--sp-3);background:var(--paper-sheet-2);border:1px solid var(--rule);
+  border-radius:var(--r-sm)}
+ .actions .btn-quiet{margin-left:auto}
  /* Ghost actions carry no fill at rest or on hover -- hover darkens ink and border only, so the
     row never turns into three little colored boxes. */
  .btn-ghost{font:inherit;font-size:13px;padding:var(--sp-2) var(--sp-4);border-radius:var(--r-sm);
@@ -643,7 +657,9 @@ PAGE = """<!doctype html><html data-theme=blue><head><meta charset=utf-8><title>
   border-right:1.5px solid var(--ink-faint);border-bottom:1.5px solid var(--ink-faint);
   transform:rotate(-45deg);transition:transform .15s}
  .accom-add[open] summary .chev{transform:rotate(45deg)}
- .accom-picker{display:flex;flex-wrap:wrap;gap:var(--sp-2);margin:var(--sp-3) 0}
+ /* Families stack as a clean vertical index (2026-08-01 UX pass, from Alex's screenshot -- the
+    old inline wrap scattered five chevron-labels into an uneven mosaic). */
+ .accom-picker{display:block;margin:var(--sp-3) 0}
  /* Chips are the CHOICE surface: selecting one is authoring, per the chosen_by:"patient"
     convention applied everywhere else a patient picks rather than types (see the starter-chip
     comment in <script> above) -- so a chip toggles a real add/remove, not a filter. */
@@ -716,9 +732,24 @@ PAGE = """<!doctype html><html data-theme=blue><head><meta charset=utf-8><title>
     .accom classes wholesale so screen, print and break rules apply unchanged. */
  .diary-in{font:inherit;font-size:13.5px;padding:var(--sp-2) var(--sp-3);border-radius:var(--r-sm);
   border:1px solid var(--rule-strong);background:var(--paper-sheet);color:var(--ink);min-width:0}
- #diaryDay{flex:0 1 140px}
+ /* Name + appointment line (Alex, 2026-08-01 13:50). Patient-typed, session-only, prints into
+    the paper header via #printwho -- the inputs themselves never print. */
+ .whoami{display:flex;gap:var(--sp-2);margin:0 0 var(--sp-4);flex-wrap:wrap}
+ /* Low-energy toggle in the after-visit stage (teammate's NeuroVerify idea, 2026-08-01). */
+ .aflow{display:flex;align-items:center;gap:7px;margin:var(--sp-2) 0 0;font-size:12.5px;
+  color:var(--ink-soft);cursor:pointer}
+ /* Answer capture in the after-visit list (2026-08-01 14:53). */
+ .after-item{flex-direction:column;align-items:stretch;gap:var(--sp-2)}
+ .after-item>.row{display:flex;align-items:baseline;justify-content:space-between;gap:var(--sp-3)}
+ .ans-row{display:flex;flex-wrap:wrap;gap:6px}
+ .ans-chip{font-size:12px;padding:6px 11px}
+ .ans-note{width:100%}
+ .after-back{float:right;font-size:12px;margin-left:var(--sp-3)}
+ #pname{flex:1 1 38%}
+ #pappt{flex:1 1 55%}
+ #diaryDay{flex:1 1 120px}
  #diaryScore{flex:0 0 auto}
- #diaryNote{flex:1 1 130px}
+ #diaryNote{flex:1 1 auto}
  @media (max-width:700px){.accom-chip,.accom-add summary{min-height:44px}
   .accom-item{padding-top:10px;padding-bottom:10px}}
 
@@ -766,6 +797,15 @@ PAGE = """<!doctype html><html data-theme=blue><head><meta charset=utf-8><title>
     not the copy -- so this stays a wayfinding system, not a coat of paint on the words. */
  .tierlab{font-variant-caps:all-small-caps;font-size:12.5px;letter-spacing:.09em;color:var(--ink-soft);
   margin-bottom:var(--sp-2);position:relative}
+ /* Collapsible sections (2026-08-01 UX pass). Labels toggle; content folds ON SCREEN ONLY --
+    the print block force-expands everything, so folding can never edit the document. */
+ .seclab{cursor:pointer;user-select:none}
+ .sec-chev{display:inline-block;width:7px;height:7px;border-right:1.5px solid currentColor;
+  border-bottom:1.5px solid currentColor;transform:rotate(45deg) translateY(-2px);margin-left:7px;
+  transition:transform var(--dur) var(--ease)}
+ .closed .sec-chev{transform:rotate(-45deg)}
+ .tier.closed .line{display:none}
+ .safety.closed{display:none}
  /* .tlrow (icon+text) stays a separate inline flex row nested inside .tierlab so the ::after rule
     below keeps behaving as a block-level line under the whole label, exactly as before -- making
     .tierlab itself the flex container would turn ::after into a flex item instead. */
@@ -789,11 +829,15 @@ PAGE = """<!doctype html><html data-theme=blue><head><meta charset=utf-8><title>
  .chip-dot{width:6px;height:6px;border-radius:50%;flex:none;background:var(--mark-bg);
   border:1px solid var(--mark-ink);opacity:.6;transition:opacity var(--dur) var(--ease)}
  .chip:hover .chip-dot{opacity:.85}
- .pinbtn{flex:none;text-align:right;font-family:var(--font-sans);font-size:10.5px;
-  letter-spacing:.07em;text-transform:uppercase;color:var(--ink-faint);border:none;
-  border-radius:2px;padding:4px 2px;background:none;cursor:pointer;transition:color var(--dur) var(--ease);opacity:1}
- @media (hover:hover){.pinbtn{opacity:.5}.line:hover .pinbtn{opacity:1}}
- .pinbtn:hover{color:var(--accent-ink)}
+ /* Pin promoted from a ghost label to a visible small pill (2026-08-01 UX pass -- Alex read the
+    old half-transparent 10.5px label as "did we lose pinning?"; on stage or touch it effectively
+    was lost). */
+ .pinbtn{flex:none;text-align:right;font-family:var(--font-sans);font-size:11px;
+  letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);border:1px solid var(--rule-strong);
+  border-radius:var(--r-pill);padding:3px 9px;background:none;cursor:pointer;
+  transition:color var(--dur) var(--ease),border-color var(--dur) var(--ease);opacity:1}
+ @media (hover:hover){.pinbtn{opacity:.8}.line:hover .pinbtn{opacity:1}}
+ .pinbtn:hover{color:var(--accent-ink);border-color:var(--accent)}
  /* Hover is a margin mark, not a highlight wash: a hairline tick grows in from the left, the same
     visual language the "open" state already uses, just fainter. */
  .line:hover{box-shadow:inset 2px 0 0 var(--rule-strong)}
@@ -1031,10 +1075,34 @@ PAGE = """<!doctype html><html data-theme=blue><head><meta charset=utf-8><title>
  /* ?screen=min variant (see the UX-VARIANTS note in the script): the two sheet-stage actions
     stay hidden until a sheet exists. Inert unless the html element carries screen-min. */
  html.screen-min:not(.has-sheet) .needs-sheet{display:none}
+ /* Before any sheet exists, the column reads top-down as: title -> the one instruction -> then
+    the optional panels (2026-08-01 UX pass -- a first-time visitor was greeted by two empty
+    input blocks before the sentence explaining the app). Flex ordering applies ONLY pre-sheet;
+    once a sheet exists (and always in print) natural DOM order returns: accommodations first. */
+ html:not(.has-sheet) #sheet{display:flex;flex-direction:column}
+ html:not(.has-sheet) #accom{order:5}
+ html:not(.has-sheet) #diary{order:6}
+ html:not(.has-sheet) #aftersum{order:7}
+ #aftersum.is-empty{display:none}
+ /* AFTER-VISIT stage: #after swaps in for the sheet in the same column; entered from the third
+    tab (mobile) or the actions-row button (desktop). */
+ .after-mode #sheet{display:none}
+ .after-mode #after{display:block!important}
+ /* ABOUT-ME intake panel: same swap, mutually exclusive with after-mode. */
+ .intake-mode #sheet{display:none}
+ .intake-mode #after{display:none!important}
+ .intake-mode #intake{display:block!important}
+ .about-in{width:100%;margin:0 0 var(--sp-4);resize:vertical}
+ /* ?demo=1 self-running demo button (see DEMO MODE note in the script). Never rendered without
+    the URL param, so judges only meet it when it is deliberately on screen. */
+ .demo-btn{position:fixed;right:14px;bottom:14px;z-index:60;font:inherit;font-size:13px;
+  padding:9px 16px;border-radius:var(--r-pill);border:1px solid var(--rule-strong);
+  background:var(--paper-sheet);color:var(--ink);cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.08)}
+ .demo-btn:disabled{opacity:.6;cursor:default}
  @media print{
   header.chrome,.tabbar,#chatcol,.sheetacts,.source-panel,.source-label,.stats,.chip,.pinbtn,
   .line-tools,#refusal,.status,details.drawer,footer.app-footer,.mine,.sheet-title,.sheet-sub,
-  .draft-card,.sheet-error,.accom-add{display:none!important}
+  .draft-card,.sheet-error,.accom-add,.whoami{display:none!important}
   /* Two print leaks found 2026-08-01 by exercising the print path directly (both PRE-EXISTING,
      both only visible on paper, which is why neither showed up on screen):
      1. `.quiet-remove` was never in the hide-list above. `.line-tools` hides the remove control
@@ -1116,11 +1184,21 @@ PAGE = """<!doctype html><html data-theme=blue><head><meta charset=utf-8><title>
      the print layout had never been human-checked before today (review find 2026-08-01). */
   .tierlab,.safety-lab,.accom-title{break-after:avoid}
   .line,.pinned,.accom-item{break-inside:avoid}
+  /* On-screen section folding must never reach paper: force every folded section open and drop
+     the chevron affordance. Folding is a reading aid, not an edit. */
+  .tier.closed .line{display:block!important}
+  .safety.closed{display:block!important}
+  .sec-chev{display:none!important}
+  /* The intake EDITOR never prints; the DOCUMENT does, even if print is hit from intake mode. */
+  #intake{display:none!important}
+  .intake-mode #sheet{display:block!important}
  }
 </style></head><body>
 <div class=tabbar id=tabbar>
- <button class=tabbtn id=tabchat aria-selected=true onclick="showTab(false)">Conversation</button>
- <button class=tabbtn id=tabsheet aria-selected=false onclick="showTab(true)">My sheet</button>
+ <button class=tabbtn id=tabchat aria-selected=true onclick="showIntake(false);showAfter(false);showTab(false)">Conversation</button>
+ <button class=tabbtn id=tabsheet aria-selected=false onclick="showIntake(false);showAfter(false);showTab(true)">My sheet</button>
+ <button class=tabbtn id=tababout aria-selected=false onclick="showIntake(true)">About me</button>
+ <button class=tabbtn id=tabafter aria-selected=false onclick="showAfter(true)">After visit</button>
 </div>
 <header class=chrome>
  <div class=brand><svg class=brand-mark viewBox="0 0 160 160" aria-hidden="true"><g fill="currentColor"><path d="M56,50 C46,50 40,58 40,68 C40,78 47,85 56,85 C56,96 48,104 38,107 L38,116 C55,113 68,101 68,79 C68,62 63,50 56,50 Z"/><path d="M104,110 C114,110 120,102 120,92 C120,82 113,75 104,75 C104,64 112,56 122,53 L122,44 C105,47 92,59 92,81 C92,98 97,110 104,110 Z"/></g></svg><span class=brand-text><span class=wordmark>__APP_NAME__</span><span class=tagline>__TAGLINE__</span></span></div>
@@ -1134,7 +1212,7 @@ PAGE = """<!doctype html><html data-theme=blue><head><meta charset=utf-8><title>
         the first second, so it moves behind `more`. "deep reasoning" serves US: a patient cannot
         know what it means or when to want it, and pays 190s+ for it -- it lives behind `more`
         too, reachable for demoing, not sitting on a frightened person's phone screen. -->
-   <label class=ctrl-select><span class=ctrl-lab>my words</span>
+   <label class=ctrl-select><span class=ctrl-lab>my words go to</span>
    <select id=backend>__BACKEND_OPTIONS__</select></label>
    <details class=ctrl-more><summary aria-label="More settings">more</summary>
     <div class=ctrl-more-in>
@@ -1160,7 +1238,7 @@ __HOSTED_BANNER__
   </div>
   <div class=composer id=composerRow><textarea id=inp rows=1 placeholder="Tell me what's on your mind…"></textarea>__MIC_UI__<button class=btn-primary onclick=send()>Send</button></div>
   <div class=mic-status id=micstatus aria-live=polite></div>
-  <div class=actions><button class=btn-primary onclick=makeSheet()>Make my sheet →</button><button class="btn-ghost needs-sheet" onclick=betterWords()>Say it better for me</button><button class=btn-ghost onclick=togglePaste()>Paste a conversation</button><button class="btn-ghost needs-sheet" onclick=runEndRound()>One more look — before you go</button><button class=btn-quiet onclick=reset()>Start over</button></div>
+  <div class=actions><button class=btn-primary onclick=makeSheet()>Make my sheet →</button><button class="btn-ghost needs-sheet" onclick=betterWords()>Say it better for me</button><button class=btn-ghost onclick=togglePaste()>Paste a conversation</button><button class="btn-ghost needs-sheet" onclick=runEndRound()>One more look — before you go</button><button class=btn-ghost onclick="showAfter(true)">After my visit</button><button class=btn-quiet onclick=reset()>Start over</button></div>
   <div class=status id=hint></div>
   <div id=refusal></div>
   <div id=pastePanel class=paste-panel style=display:none>
@@ -1181,14 +1259,36 @@ __HOSTED_BANNER__
 __FEEDBACK_UI__
  </div>
  <div class=col id=sheetcol>
+  <div class=sheet id=after style=display:none></div>
+  <!-- ABOUT ME -- the intake panel (Alex, 2026-08-01 14:58): the durable patient profile,
+       separate from any one appointment. Inputs are STATIC HTML (never innerHTML-rebuilt) so
+       typed values survive; only the accommodations editor inside re-renders. -->
+  <div class=sheet id=intake style=display:none>
+   <button class="btn-ghost after-back" onclick="showIntake(false);showTab(true)">← Back to my sheet</button>
+   <h2 class=sheet-title>About me</h2>
+   <span class=sheet-sub>The things that stay true visit after visit — my name, how I take things in, what helps me.</span>
+   <div class=whoami>
+    <input id=pname class=diary-in placeholder="My name (optional)" maxlength=60 oninput=renderWho()>
+    <input id=pageyrs class=diary-in placeholder="Age (optional)" maxlength=8 oninput=renderWho()>
+   </div>
+   <textarea id=pabout class="diary-in about-in" rows=2 maxlength=300 onchange=renderAccomSheet()
+    placeholder="Anything else my care team should know about me, in my own words… (optional)"></textarea>
+   <div id=intakeAccom></div>
+  </div>
   <div class=sheet id=sheet>
    <div id=printhead><b>Notes for my appointment</b>
+    <span id=printwho></span>
     <span>Written by me before this visit, in my own words. Prepared with __APP_NAME__ + Gemma 4.</span>
     <span id=printver></span></div>
    <h2 class=sheet-title>Notes for my appointment</h2>
    <span class=sheet-sub>Built from your own words — nothing added <span id=where></span></span>
+   <div class=whoami id=whoami>
+    <input id=pappt class=diary-in placeholder="This visit: seeing… (doctor or clinic, date — optional)" maxlength=80 oninput=renderWho()>
+    <button class=btn-ghost type=button onclick="showIntake(true)">About me →</button>
+   </div>
    <div id=accom></div>
    <div id=diary></div>
+   <div id=aftersum class="accom is-empty"></div>
    <div id=body class=placeholder>Talk for a bit, then press <b>Make my sheet</b>.</div></div>
  </div>
 </div>
@@ -1234,6 +1334,12 @@ function errBubble(msg){let d=document.createElement('div');d.className='msg err
 function badge(where,ms){let s=(ms/1000).toFixed(1)+'s';return where==='cloud'
   ?'<span class="dot cloud"></span> left your device · '+s
   :'<span class=dot></span> stayed on this device · '+s;}
+// Seconds-free variant for the SHEET header (Alex, 2026-08-01 12:49): on the document itself the
+// claim is what matters ("stayed on this device"); latency is chat-side telemetry, not a fact
+// about the artifact.
+function badgeWhere(where){return where==='cloud'
+  ?'<span class="dot cloud"></span> left your device'
+  :'<span class=dot></span> stayed on this device';}
 // Animated "thinking" hint (grafted from A_precision_calm) — three pulsing dots + the label,
 // replacing a static "..." ellipsis, used for every wait state (chat reply, sheet build, polish
 // draft). Reduced-motion freezes the dots via the global media query in <style>.
@@ -1338,7 +1444,49 @@ if(QS.get('screen')==='min')document.documentElement.classList.add('screen-min')
 // Composer focus is desktop-only: an unconditional autofocus pops the keyboard over the first
 // screen on a phone -- the judge's QR path -- before they have read a word.
 if(!('ontouchstart' in window)){const _ta=document.getElementById('inp');if(_ta)_ta.focus();}
+// DEMO MODE (?demo=1, 2026-08-01). The app acts out its own scripted walkthrough: it TYPES the
+// two overnight-tested demo turns into the real composer, sends them through the real /chat
+// (live model, live latency -- nothing canned, so the on-device proof stays honest), fills the
+// accommodations and diary panels through their real state paths, and builds the sheet. It
+// stops there ON PURPOSE: pin / add-back / delete-undo are the patient-control story, and that
+// story belongs to a human hand. Without the URL param no button exists.
+const DEMO_ON=QS.get('demo')==='1';
+let DEMO_RUN=false;
+const DEMO_T1="I've been getting headaches for about three weeks, mostly mornings.";
+const DEMO_T2="It's probably nothing, I've just been tired. But they're worse when I bend over, and honestly I'm scared because my dad had something like this.";
+const DEMO_ACCOM=["Please let me read the plan written down before I leave."];
+const DEMO_DIARY=["Tue — 2/10 — mostly fine","Wed — 8/10 — had to sit in the dark before work","Fri — 6/10 — woke with it, neck stiff too"];
+function demoSleep(ms){return new Promise(r=>setTimeout(r,ms));}
+async function demoType(text){inp.focus();inp.value='';
+ for(let i=0;i<text.length;i++){inp.value+=text[i];if(i%3===0)await demoSleep(16);}
+ await demoSleep(400);}
+async function runDemo(){
+ if(DEMO_RUN||BUSY)return;DEMO_RUN=true;
+ const b=document.getElementById('demobtn');if(b){b.disabled=true;b.textContent='demo running…';}
+ try{
+  if(SHEET||msgs.length>1)reset();
+  await demoSleep(600);
+  await demoType(DEMO_T1);await send();
+  await demoSleep(1000);
+  await demoType(DEMO_T2);await send();
+  await demoSleep(800);
+  for(const a of DEMO_ACCOM){ACCOM.push({id:ACCOM_SEQ++,text:a,source:'typed'});}
+  renderAccom();await demoSleep(800);
+  for(const d of DEMO_DIARY){DIARY.push({id:DIARY_SEQ++,text:d});}
+  renderDiary();await demoSleep(1000);
+  await makeSheet();
+ }finally{DEMO_RUN=false;if(b){b.disabled=false;b.textContent='▶ run demo';}}
+}
+if(DEMO_ON){const db=document.createElement('button');db.id='demobtn';db.type='button';
+ db.textContent='▶ run demo';db.className='demo-btn';db.onclick=runDemo;
+ document.body.appendChild(db);}
 let SHEET=null, SEL=-1, DROPPED=[], ADDED=[], HIST=[], SHOWMORE=DRAWER_B, PINNED=-1;
+// Collapsible sheet sections (Alex, 2026-08-01 12:49). State lives HERE, not in the DOM, because
+// renderSheet() rebuilds its HTML on every interaction. Print ignores collapse entirely -- a
+// folded section still prints in full (see the print-block overrides); folding is a reading aid,
+// never an edit.
+let COLLAPSED=new Set();
+function toggleSec(k){if(COLLAPSED.has(k))COLLAPSED.delete(k);else COLLAPSED.add(k);renderSheet();}
 // END-ROUND: the "look back over everything" finale (Alex's own idea, three_pane/
 // BRAINSTORM_ALEX_2026-07-31.md §2). ENDROUND holds the CANDIDATES the model suggested this pass
 // (never shown as if they were the patient's words); EAPPROVED holds only what the patient has
@@ -1486,8 +1634,26 @@ function renderAccom(){
    +'<textarea id=accomText rows=2 placeholder="Or write your own, in your own words…" '
    +'onkeydown="if(event.key===&#39;Enter&#39;&&!event.shiftKey){event.preventDefault();addAccomCustom();}"></textarea>'
    +'<button class=btn-ghost type=button onclick=addAccomCustom()>Add</button></div></details>';
- accom.innerHTML=h;
- accom.className='accom'+(ACCOM.length?'':' is-empty');}
+ // The EDITOR lives in the About-me intake panel (2026-08-01 14:58); the sheet keeps a clean
+ // read-only block via renderAccomSheet() below -- chosen items and the about-me line still
+ // print, the picker chrome no longer crowds the document column.
+ const host=document.getElementById('intakeAccom');
+ if(host){host.innerHTML=h;host.className='accom'+(ACCOM.length?'':' is-empty');}
+ renderAccomSheet();}
+function renderAccomSheet(){
+ const el=document.getElementById('accom');if(!el)return;
+ const ab=document.getElementById('pabout');
+ const about=ab?ab.value.trim():'';
+ let h='<span class=accom-title>How I need this visit to go</span>'
+  +'<span class=accom-sub>My own words, shown first — edited under About me.</span>';
+ if(ACCOM.length||about){
+  h+='<div class=accom-items>';
+  if(about)h+='<div class=accom-item><span class=txt>'+esc_(about)+'</span></div>';
+  for(const a of ACCOM){h+='<div class=accom-item><span class=txt>'+esc_(a.text)+'</span></div>';}
+  h+='</div>';
+ }
+ el.innerHTML=h;
+ el.className='accom'+((ACCOM.length||about)?'':' is-empty');}
 
 // MY WEEK -- the symptom diary (added 2026-08-01, from a family design conversation). Same provenance class as the
 // accommodations block above it: nothing here is extracted or modeled. Every entry is a number
@@ -1508,6 +1674,13 @@ function addDiaryEntry(){
  DIARY.push({id:DIARY_SEQ++,text:t});renderDiary();
  const dd=document.getElementById('diaryDay');if(dd){dd.value='';dd.focus();}}
 function removeDiary(id){DIARY=DIARY.filter(x=>x.id!==id);renderDiary();}
+// The paper header line: "Sam, 42 — seeing Dr. Osei, Aug 5". Patient-typed, live-updated, empty
+// when unused so the printed page never carries a blank label.
+function whoName(){const n=pname.value.trim(),y=pageyrs.value.trim();
+ return n&&y?n+', '+y:(n||(y?'age '+y:''));}
+function renderWho(){const pw=document.getElementById('printwho');if(!pw)return;
+ const n=whoName(),a=pappt.value.trim();
+ pw.textContent=(n||a)?(n+(n&&a?' — ':'')+a):'';}
 function renderDiary(){
  let h='<span class=accom-title>My week — day by day</span>'
    +'<span class=accom-sub>My own numbers, 0–10 — I add and remove these myself.</span>';
@@ -1521,23 +1694,190 @@ function renderDiary(){
  }
  let opts='<option value="">0–10</option>';
  for(let i=0;i<=10;i++)opts+='<option>'+i+'</option>';
+ // Two rows (2026-08-01 UX pass, from Alex's screenshot): day+score fit side by side; the note
+ // gets a full row so its placeholder never truncates into gibberish ("Day (V" / "What").
  h+='<details class=accom-add'+(DIARY.length?'':' open')+'>'
    +'<summary><span class=chev></span> Add a day</summary>'
    +'<div class=accom-custom>'
    +'<input id=diaryDay class=diary-in placeholder="Day (Wed, Jul 30…)" maxlength=24>'
-   +'<select id=diaryScore class=diary-in>'+opts+'</select>'
+   +'<select id=diaryScore class=diary-in>'+opts+'</select></div>'
+   +'<div class=accom-custom>'
    +'<input id=diaryNote class=diary-in placeholder="What happened, in my words" maxlength=120 '
    +'onkeydown="if(event.key===&#39;Enter&#39;){event.preventDefault();addDiaryEntry();}">'
    +'<button class=btn-ghost type=button onclick=addDiaryEntry()>Add</button></div></details>';
  diary.innerHTML=h;
  diary.className='accom'+(DIARY.length?'':' is-empty');}
 
+// AFTER MY VISIT -- the third stage (Alex + team, 2026-08-01). The drive-home phenomenon: the
+// question you remember in the parking lot, the answer you nodded along to, the thing that
+// changed since. 18 prompts behind six doors -- the question set is the TEAM's, merged from a
+// teammate's NeuroVerify Care exploration (2026-08-01 14:00) and priority-ordered within each
+// bucket, which is exactly what low-energy mode leans on. Same progressive-disclosure machinery
+// as accommodations, ZERO model calls -- fully deterministic, works with wifi off. The prompts
+// are QUESTIONS ONLY -- a question is the only safe channel -- and everything kept or typed
+// here is patient-authored by construction.
+const AFTER_FAMILIES=[
+ {h:'Medication Reconciliation',items:[
+  'Were you able to pick up your new prescription, and have you taken your first dose yet?',
+  'Are you taking any OTC vitamins, herbs, or supplements we did not discuss at the visit?',
+  'Did the doctor tell you to stop an old medication that might still be in your cabinet?']},
+ {h:'Allergies & Reactions',items:[
+  'Any new physical symptoms (rash, stomach upset, hives, breathing changes) since starting treatment?',
+  'Any sudden sensory sensitivity, restlessness, brain fog, or extreme insomnia after your medication?',
+  'Any known allergies to medications, like Penicillin, Sulfa, Aspirin, or Latex, missing from your record?']},
+ {h:'Recent Care History',items:[
+  'Any minor procedures in the last 6 months (skin biopsy, dental surgery, joint injection, urgent care)?',
+  'Any blood tests, X-rays, or lab results from another clinic or specialist we should request for your file?',
+  'Are you currently recovering from a procedure that affects your stamina, mobility, or cognitive energy?']},
+ {h:'Family History Updates',items:[
+  'Has anyone in your immediate family been newly diagnosed with something like heart disease or diabetes?',
+  'Is there a family health pattern you would like evaluated for preventive screening or genetic testing?',
+  'Would you prefer to keep your family history record as-is, with no updates today?']},
+ {h:'Understanding Care Plan',items:[
+  'In your own words, what is your understanding of the main health condition we discussed today?',
+  'What specific warning symptoms should you watch for that require a call back or an ER visit?',
+  'Do you know your very next action step: bloodwork, a reminder, or a follow-up appointment?']},
+ {h:'Boundaries & Logistics',items:[
+  'Which contact method feels safest for you to receive non-urgent follow-ups and test results?',
+  'Can we leave detailed medical info on your voicemail, or only a brief call-back message?',
+  'What time of day should staff avoid calling, to prevent focus interruptions or phone anxiety?']}];
+const AFTER_OPTIONS=[],AFTER_FAM_OF=[];
+AFTER_FAMILIES.forEach(function(f,fi){f.items.forEach(function(s){
+ AFTER_FAM_OF.push(fi);AFTER_OPTIONS.push(s);});});
+let AFTER_ON=false, AFTERSEL=[], AFTER_SEQ=9000, AFTER_LOW=false;
+// Low-energy mode -- the teammate's NeuroVerify insight (2026-08-01): a burnt-out patient gets
+// ONE question per bucket, the top-priority one, instead of eighteen. Works because each
+// family's items are priority-ordered (first = the one that matters most).
+function toggleAfterLow(){AFTER_LOW=!AFTER_LOW;renderAfter();}
+function showAfter(on){AFTER_ON=on;document.body.classList.toggle('after-mode',on);
+ if(on){document.body.classList.remove('intake-mode');tababout.setAttribute('aria-selected','false');
+  document.body.classList.add('show-sheet');
+  tabchat.setAttribute('aria-selected','false');tabsheet.setAttribute('aria-selected','false');}
+ tabafter.setAttribute('aria-selected',String(on));
+ if(on)renderAfter();}
+// ABOUT ME -- the intake panel. Same swap pattern as the after-visit stage; the two are
+// mutually exclusive and both give the column back to the sheet on exit.
+function showIntake(on){document.body.classList.toggle('intake-mode',on);
+ if(on){document.body.classList.remove('after-mode');AFTER_ON=false;
+  tabafter.setAttribute('aria-selected','false');
+  document.body.classList.add('show-sheet');
+  tabchat.setAttribute('aria-selected','false');tabsheet.setAttribute('aria-selected','false');
+  renderAccom();}
+ tababout.setAttribute('aria-selected',String(on));}
+// ANSWER CAPTURE (Alex, 2026-08-01 14:53): a question alone is a reminder; a question WITH the
+// patient's answer is information for the doctor. Answer options come from the teammate's own
+// NeuroVerify metadata (status_chips / options_select); everything else gets Yes/No/Unsure.
+// Every answer is CHOSEN or TYPED by the patient -- authored by construction, like accom/diary.
+const AFTER_ANS={
+ 0:['Picked up and started','Waiting at pharmacy','Insurance or cost barrier','Not started yet'],
+ 8:['Fully recovered','Mild fatigue','Still recovering','No recent procedures'],
+ 11:['Keep record as-is','Updates needed','Unsure'],
+ 14:['Clear next step','Needs clarification','Need help booking','Unsure'],
+ 15:['Patient portal','Text message','Phone call','Email'],
+ 16:['Detailed voicemail OK','Brief call-back only','No voicemail']};
+function afterLine(a){const ex=[a.ans,a.note].filter(Boolean).join('; ');
+ return ex?a.text+' — my answer: '+ex:a.text;}
+function afterToggle(qi){const at=AFTERSEL.findIndex(x=>x.qi===qi);
+ if(at>=0)AFTERSEL.splice(at,1);else AFTERSEL.push({id:AFTER_SEQ++,qi:qi,text:AFTER_OPTIONS[qi],ans:'',note:''});
+ renderAfter();}
+function afterSetAns(id,val){const a=AFTERSEL.find(x=>x.id===id);if(!a)return;
+ a.ans=(a.ans===val?'':val);renderAfter();}
+function afterNote(id,v){const a=AFTERSEL.find(x=>x.id===id);if(!a)return;
+ a.note=v.trim();renderAfter();}
+function afterAddCustom(){const el=document.getElementById('afterText');
+ const t=(el?el.value:'').trim();if(!t)return;
+ AFTERSEL.push({id:AFTER_SEQ++,qi:-1,text:t,ans:'',note:''});renderAfter();}
+function afterRemove(id){AFTERSEL=AFTERSEL.filter(x=>x.id!==id);renderAfter();}
+function renderAfter(){
+ const sel=new Set(AFTERSEL.filter(x=>x.qi>=0).map(x=>x.qi));
+ let h='<button class="btn-ghost after-back" onclick="showAfter(false);showTab(true)">← Back to my sheet</button>'
+  +'<h2 class=sheet-title>After my visit</h2>'
+  +'<span class=sheet-sub>The question you remember in the parking lot still counts — answer it here, in your own words. Your answers join your sheet.</span>';
+ if(AFTERSEL.length){
+  h+='<div class=accom-items>';
+  for(const a of AFTERSEL){
+   h+='<div class="accom-item after-item"><div class=row><span class=txt>'+esc_(a.text)+'</span>'
+     +'<button class=quiet-remove onclick="afterRemove('+a.id+')">remove</button></div>';
+   if(a.qi>=0){
+    const opts=AFTER_ANS[a.qi]||['Yes','No','Unsure'];
+    h+='<div class=ans-row>';
+    for(const o of opts){
+     h+='<button type=button class="accom-chip ans-chip" aria-pressed="'+(a.ans===o?'true':'false')+'" '
+       +'onclick="afterSetAns('+a.id+',&#39;'+o+'&#39;)">'+o+'</button>';
+    }
+    h+='</div><input class="diary-in ans-note" data-aid='+a.id+' placeholder="In my own words (optional)" '
+      +'maxlength=120 onchange="afterNote('+a.id+',this.value)">';
+   }
+   h+='</div>';}
+  h+='</div>';
+ }
+ h+='<details class=accom-add open><summary><span class=chev></span> Things worth checking</summary>'
+  +'<label class=aflow><input type=checkbox '+(AFTER_LOW?'checked':'')+' onchange=toggleAfterLow()> '
+  +'Running on empty? Show just the six that matter most.</label>'
+  +'<div class=accom-picker>';
+ if(AFTER_LOW){
+  h+='<div class=accom-fam-in>';
+  let base=0;
+  for(let fi=0;fi<AFTER_FAMILIES.length;fi++){
+   h+='<button type=button class=accom-chip aria-pressed="'+(sel.has(base)?'true':'false')+'" '
+     +'onclick="afterToggle('+base+')">'+esc_(AFTER_OPTIONS[base])+'</button>';
+   base+=AFTER_FAMILIES[fi].items.length;
+  }
+  h+='</div>';
+ } else {
+ let idx=0;
+ for(let fi=0;fi<AFTER_FAMILIES.length;fi++){
+  const fam=AFTER_FAMILIES[fi];
+  const n=fam.items.filter(function(_,k){return sel.has(idx+k);}).length;
+  h+='<details class=accom-fam'+(n?' open':'')+'><summary><span class=chev></span>'+esc_(fam.h)
+    +(n?' <span class=accom-count>'+n+'</span>':'')+'</summary><div class=accom-fam-in>';
+  for(let k=0;k<fam.items.length;k++,idx++){
+   h+='<button type=button class=accom-chip aria-pressed="'+(sel.has(idx)?'true':'false')+'" '
+     +'onclick="afterToggle('+idx+')">'+esc_(AFTER_OPTIONS[idx])+'</button>';
+  }
+  h+='</div></details>';
+ }
+ }
+ h+='</div><div class=accom-custom>'
+  +'<textarea id=afterText rows=2 placeholder="Or the thing you actually want to ask, in your own words…" '
+  +'onkeydown="if(event.key===&#39;Enter&#39;&&!event.shiftKey){event.preventDefault();afterAddCustom();}"></textarea>'
+  +'<button class=btn-ghost type=button onclick=afterAddCustom()>Add</button></div></details>';
+ h+='<div class=sheetacts><button class=primary onclick=copyAfter()>Copy my follow-up note</button>'
+  +'<button class=secondary onclick="showAfter(false);showTab(true)">Back to my sheet</button>'
+  +'<span class=copied id=aftercopied></span></div>';
+ after.innerHTML=h;
+ // Note values are assigned as DOM properties, never string-built into attributes -- esc_ does
+ // not escape double quotes, and a typed quote must not be able to break out of an attribute.
+ after.querySelectorAll('.ans-note').forEach(function(el){
+  const a=AFTERSEL.find(x=>x.id===Number(el.dataset.aid));if(a)el.value=a.note||'';});
+ renderAfterSum();}
+// The sheet-side mirror: answered questions appear on the doctor-facing sheet (and therefore in
+// print and export) as their own patient-authored block, exactly like accommodations and diary.
+function renderAfterSum(){
+ const el=document.getElementById('aftersum');if(!el)return;
+ let h='<span class=accom-title>After my visit</span>'
+  +'<span class=accom-sub>My own questions and answers, added after the appointment.</span>';
+ if(AFTERSEL.length){
+  h+='<div class=accom-items>';
+  for(const a of AFTERSEL){h+='<div class=accom-item><span class=txt>'+esc_(afterLine(a))+'</span></div>';}
+  h+='</div>';
+ }
+ el.innerHTML=h;
+ el.className='accom'+(AFTERSEL.length?'':' is-empty');}
+async function copyAfter(){const el=document.getElementById('aftercopied');
+ const NL=String.fromCharCode(10);
+ let t='Follow-up after my visit — my own questions and answers:';
+ for(const a of AFTERSEL)t+=NL+'- '+afterLine(a);
+ t+=NL+NL+'(Written by me with __APP_NAME__ after my visit.)';
+ try{await navigator.clipboard.writeText(t);if(el)el.textContent='Copied — paste it into an email or message.';}
+ catch(e){if(el)el.textContent='Copy blocked by the browser; the text is in the console.';console.log(t);}}
+
 async function makeSheet(){if(BUSY)return;hint.innerHTML=thinkingHTML('Putting your words in order');refusal.innerHTML='';
  BUSY=true;
  try{
   let r=await fetch('/sheet',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:msgs,backend:backend.value,think:deep.checked,accommodations:ACCOM.map(a=>a.text)})});
   let j=await r.json();if(j.error){oops(j.error,'sheet');return;}
-  hint.innerHTML=badge(j.where,j.ms);where.innerHTML=badge(j.where,j.ms);
+  hint.innerHTML=badge(j.where,j.ms);where.innerHTML=badgeWhere(j.where);
   SHEET=j;SEL=-1;DROPPED=[];ADDED=[];HIST=[];SHOWMORE=DRAWER_B;PINNED=-1;POLISH={};PROBE={};SHEET_ANIM=true;
   document.documentElement.classList.add('has-sheet');
   ENDROUND=null;EAPPROVED={questions:[],dropped:[]};renderSheet();
@@ -1589,8 +1929,10 @@ function renderSheet(){
  for(const T of TIERS){
   const rows=SHEET.lines.filter(l=>l.tier===T.key&&l.id!==PINNED);
   if(!rows.length) continue;
-  h+='<div class=tier style="--tier-color:'+T.color+'"><div class=tierlab>'
-    +'<span class=tlrow><span class=tricon aria-hidden=true>'+T.icon+'</span>'+T.label+'</span></div>';
+  h+='<div class="tier'+(COLLAPSED.has(T.key)?' closed':'')+'" style="--tier-color:'+T.color+'">'
+    +'<div class="tierlab seclab" onclick="toggleSec(&#39;'+T.key+'&#39;)">'
+    +'<span class=tlrow><span class=tricon aria-hidden=true>'+T.icon+'</span>'+T.label
+    +'<span class=sec-chev aria-hidden=true></span></span></div>';
   for(const l of rows){
    const i=SHEET.lines.indexOf(l);
    h+='<div class="line'+(i===SEL?' open':'')+'" style="animation-delay:'+nextDelay()+'ms" onclick="showSource('+i+')">'+lineRow(l,i);
@@ -1609,8 +1951,10 @@ function renderSheet(){
  // other line. "The patient has full control" (Alex, 2026-07-27) does not survive a section that
  // is their words but cannot be removed.
  if(SHEET.cues&&SHEET.cues.length){
-  h+='<div class=safety-lab><span>Things I mentioned</span><span class=locked>my words — remove any of these too</span></div>';
-  h+='<div class=tier>';
+  h+='<div class="safety-lab seclab'+(COLLAPSED.has('cues')?' closed':'')+'" onclick="toggleSec(&#39;cues&#39;)">'
+    +'<span>Things I mentioned <span class=sec-chev aria-hidden=true></span></span>'
+    +'<span class=locked>my words — remove any of these too</span></div>';
+  h+='<div class="tier'+(COLLAPSED.has('cues')?' closed':'')+'">';
   for(const c of SHEET.cues){
    h+='<div class=line style="cursor:default;animation-delay:'+nextDelay()+'ms"><div class=row><span class=txt>'+esc_(c.text)+'</span>'
      +'<button class=quiet-remove title="Remove this line" onclick="dropCue('+c.id+')">remove</button></div></div>';
@@ -1623,8 +1967,10 @@ function renderSheet(){
  // The safety block keeps no delete control -- not as an exception to the patient's control, but
  // because it is not their text. It is generic, identical for everyone whose transcript touches the
  // same topic, and says nothing about them. Removing it hides nothing they said.
- h+='<div class=safety-lab><span>Safety information</span><span class=locked>included every time · not about you</span></div>';
- h+='<div class=safety>'+esc_(SHEET.safety)+'</div>';
+ h+='<div class="safety-lab seclab'+(COLLAPSED.has('safety')?' closed':'')+'" onclick="toggleSec(&#39;safety&#39;)">'
+   +'<span>Safety information <span class=sec-chev aria-hidden=true></span></span>'
+   +'<span class=locked>included every time · not about you</span></div>';
+ h+='<div class="safety'+(COLLAPSED.has('safety')?' closed':'')+'">'+esc_(SHEET.safety)+'</div>';
  const s=SHEET.stats;
  h+='<div class=stats>'+s.n_selected+' of '+s.n_candidates+' pieces chosen · '
    +s.n_verified+'/'+s.n_selected+' verified against your recording</div>';
@@ -1690,6 +2036,9 @@ async function copySheet(){copied.textContent='';
                         chip_spans:SHEET.chip_spans||[],
                         accommodations:ACCOM.map(a=>a.text),
                         diary:DIARY.map(d=>d.text),
+                        after:AFTERSEL.map(afterLine),
+                        name:whoName(),appt:pappt.value.trim(),
+                        about:(document.getElementById('pabout')?pabout.value.trim():''),
                         // Only what the patient APPROVED, never the full candidate list — see
                         // ENDROUND/EAPPROVED note above. The server re-verifies each item again
                         // before it can land in the printed/emailed letter (endround.verify_export_item).
@@ -2343,6 +2692,9 @@ function reset(){msgs=[];chat.innerHTML='';YOUB=[];SHEET=null;SEL=-1;PINNED=-1;P
  hint.textContent='';refusal.innerHTML='';
  ACCOM=[];renderAccom();
  DIARY=[];renderDiary();
+ AFTERSEL=[];if(AFTER_ON)showAfter(false);renderAfterSum();
+ pname.value='';pappt.value='';pageyrs.value='';pabout.value='';renderWho();
+ document.body.classList.remove('intake-mode');tababout.setAttribute('aria-selected','false');
  pastePanel.style.display='none';pasteResult.innerHTML='';pasteText.value='';PASTE_PARSED=null;TOPIC_Q=[];
  body.innerHTML='Talk for a bit, then press <b>Make my sheet</b>.';body.className='placeholder';
  starters.style.display='flex';
@@ -2371,9 +2723,12 @@ _OPTS_LOCAL = ('<option value=e2b>Stay on this device (Gemma 4 E2B)</option>'
                '<option value=nebius>Send my words to the cloud — faster (Nebius)</option>')
 _hb = BACKENDS.get(HOSTED_BACKEND, BACKENDS["nebius"])
 _hosted_is_gemma = _hb["kind"] == "local"
+# Consequence-first, matching the local list (review find 2026-08-01: the fix only reached the
+# local build, so the QR surface -- most judges' first contact -- still led with a model ID).
+# Pairs with the header label: "my words go to ... This demo space".
 _OPTS_HOSTED = ('<option value=' + HOSTED_BACKEND + '>'
-                + (_hb["label"].split(" — ")[0] + " — hosted demo" if _hosted_is_gemma
-                   else 'Cloud demo (Nebius) — hosted preview') + '</option>')
+                + ("This demo space — " + _hb["label"].split(" — ")[0] + ", hosted" if _hosted_is_gemma
+                   else 'A cloud demo space (Nebius) — hosted preview') + '</option>')
 # HONESTY FIX: this used to be scoped only inside _BANNER_HOSTED, which renders only when
 # HOSTED=1. The always-visible page footer (below, __FOOTER_CLAIM__) carried its own separate,
 # unconditioned "Nothing leaves this device unless you choose it" string that never mentioned
@@ -2803,7 +3158,8 @@ class H(http.server.BaseHTTPRequestHandler):
                     app_name=APP_NAME,
                     chip_spans=req.get("chip_spans"),
                     accommodations=req.get("accommodations", []),
-                    diary=req.get("diary", []))
+                    diary=req.get("diary", []),
+                    after=req.get("after", []))
                 segments = pipeline.speech_segments(sheet)
                 try:
                     wav = speech.synthesize(segments)
@@ -2834,8 +3190,22 @@ class H(http.server.BaseHTTPRequestHandler):
                     app_name=APP_NAME,
                     chip_spans=req.get("chip_spans"),
                     accommodations=req.get("accommodations", []),
-                    diary=req.get("diary", []))
+                    diary=req.get("diary", []),
+                    after=req.get("after", []))
                 text = pipeline.render_text(sheet)
+                # Name / appointment line (2026-08-01): patient-typed, so it goes in unbracketed
+                # under a bracketed heading, same authorship rule as every other patient field.
+                who = " — ".join(x for x in (
+                    str(req.get("name", ""))[:70].strip(),
+                    str(req.get("appt", ""))[:80].strip()) if x)
+                # About-me rides between the identity line and the document body -- durable
+                # patient-typed profile text, unbracketed under a bracketed heading like every
+                # other patient field.
+                about = str(req.get("about", ""))[:300].strip()
+                if about:
+                    text = "[About me, in my own words:] " + about + "\n\n" + text
+                if who:
+                    text = "[This sheet belongs to:] " + who + "\n\n" + text
                 # End-round additions (questions for the doctor / dropped threads) are APP-AUTHORED,
                 # never patient words, and only reach the export if the patient approved them
                 # client-side (see betterWords/POLISH{} for the same approve-per-item discipline).
