@@ -617,7 +617,7 @@ PAGE = """<!doctype html><html data-theme=blue><head><meta charset=utf-8><title>
  .sheet{background:var(--paper-sheet);border:1px solid var(--rule);border-radius:var(--r-card);
   padding:var(--sp-6) var(--sp-7) var(--sp-6);
   box-shadow:0 1px 2px rgba(var(--shadow-rgb),.05),0 10px 28px -14px rgba(var(--shadow-rgb),.22),0 28px 56px -30px rgba(var(--shadow-rgb),.14)}
- .sheet-title{margin:0;font-family:var(--font-serif);font-size:19px;font-weight:600;
+ .sheet-title{margin:0;clear:both;font-family:var(--font-serif);font-size:19px;font-weight:600;
   letter-spacing:-.005em;color:var(--ink)}
  .sheet-sub{display:block;margin:2px 0 var(--sp-5);padding-bottom:var(--sp-4);font-size:12px;
   font-style:italic;font-family:var(--font-serif);color:var(--ink-faint);border-bottom:1px solid var(--rule)}
@@ -746,6 +746,7 @@ PAGE = """<!doctype html><html data-theme=blue><head><meta charset=utf-8><title>
  .ans-note{width:100%}
  .after-back{float:right;font-size:12px;margin-left:var(--sp-3)}
  #pname{flex:1 1 38%}
+ #pageyrs{flex:1 1 24%}
  #pappt{flex:1 1 55%}
  #diaryDay{flex:1 1 120px}
  #diaryScore{flex:0 0 auto}
@@ -948,7 +949,9 @@ PAGE = """<!doctype html><html data-theme=blue><head><meta charset=utf-8><title>
  .safety{background:none;border:none;border-radius:0;max-width:64ch;opacity:.85;
   padding:0;font-size:12.5px;line-height:1.6;color:var(--ink-soft);white-space:pre-wrap;margin-top:var(--sp-1)}
 
- .stats{font-family:ui-monospace,Menlo,monospace;font-size:11px;color:var(--ink-faint);margin-top:var(--sp-3)}
+ /* --ink-soft, not -faint: this line is the no-fabrication receipt -- it must not read fainter
+    than the deliberately-quiet safety block above it (scout contrast measurement, 3.1:1 -> 6.6:1). */
+ .stats{font-family:ui-monospace,Menlo,monospace;font-size:11px;color:var(--ink-soft);margin-top:var(--sp-3)}
  .sheetacts{display:flex;gap:var(--sp-3);margin-top:var(--sp-6);flex-wrap:wrap;align-items:center}
  .sheetacts button{font-size:12px;letter-spacing:.03em;text-transform:uppercase;padding:var(--sp-3) var(--sp-5);
   border-radius:var(--r-sm);border:1px solid transparent;cursor:pointer;font-family:var(--font-sans);
@@ -1043,8 +1046,11 @@ PAGE = """<!doctype html><html data-theme=blue><head><meta charset=utf-8><title>
     width (the 390px pin in the mocks was a headless-Chrome screenshot workaround, not design). */
  @media (max-width:700px){
   .tabbar{display:flex;position:sticky;top:0;z-index:5;background:var(--paper-sheet-2);
-   border-bottom:1px solid var(--rule-strong);padding:var(--sp-2) var(--sp-3);gap:var(--sp-2)}
-  .tabbtn{flex:1;font-size:13.5px;padding:10px 0;border-radius:var(--r-pill);border:1px solid transparent;
+   border-bottom:1px solid var(--rule-strong);padding:var(--sp-2) var(--sp-3);gap:var(--sp-1)}
+  /* 12px + nowrap: four tabs at 375px give ~82px each; "Conversation" at 13.5px wrapped to two
+     lines and broke the row height (scout find, 2026-08-01 15:25). */
+  .tabbtn{flex:1;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+   padding:10px 0;border-radius:var(--r-pill);border:1px solid transparent;
    background:none;color:var(--ink-soft);cursor:pointer;min-height:44px;transition:color var(--dur) var(--ease)}
   .tabbtn[aria-selected=true]{background:var(--accent-tint);color:var(--accent-ink);border-color:var(--accent-tint-2);font-weight:600}
   header.chrome{padding:var(--sp-3) var(--sp-4)}
@@ -1189,9 +1195,21 @@ PAGE = """<!doctype html><html data-theme=blue><head><meta charset=utf-8><title>
   .tier.closed .line{display:block!important}
   .safety.closed{display:block!important}
   .sec-chev{display:none!important}
-  /* The intake EDITOR never prints; the DOCUMENT does, even if print is hit from intake mode. */
+  /* NEITHER editor panel ever prints; the DOCUMENT does, whichever tab print is hit from --
+     after-visit answers reach paper via their #aftersum mirror on the sheet (scout find,
+     2026-08-01 15:24: printing from the after tab produced live UI controls on paper). */
   #intake{display:none!important}
+  #after{display:none!important}
   .intake-mode #sheet{display:block!important}
+  .after-mode #sheet{display:block!important}
+  /* No blank line under the title when name/appt or the verified count are empty. */
+  #printhead span:empty{display:none}
+  /* The verified-count + where-processed line is the page's key trust fact -- it outranks the
+     boilerplate line above it. */
+  #printver{font-weight:600;color:#000}
+  /* Only the true accommodations block carries the heavy AASPIRE first-read rule; diary and
+     after-visit mirrors take a lighter rule so the hierarchy survives all three being present. */
+  #diary.accom,#aftersum.accom{border-bottom:.5pt solid #999}
  }
 </style></head><body>
 <div class=tabbar id=tabbar>
@@ -1604,7 +1622,7 @@ function addAccomCustom(){const t=(accomText?accomText.value:'').trim();if(!t)re
 function removeAccom(id){ACCOM=ACCOM.filter(a=>a.id!==id);renderAccom();}
 function renderAccom(){
  const sel=accomSelected();
- let h='<span class=accom-title>How I need this visit to go</span>'
+ let h='<span class=accom-title>How I need my visits to go</span>'
    +'<span class=accom-sub>My own words, shown first — add or remove anytime.</span>';
  if(ACCOM.length){
   h+='<div class=accom-items>';
